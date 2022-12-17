@@ -1,0 +1,71 @@
+# Specification of ocamlup
+
+`ocamlup` is a tool to easily install OCaml on a raw computer, by
+downloading binaries when possible.
+
+## Usage
+
+### Initial installation
+
+The user should simply use:
+
+```
+curl --proto '=https' --tlsv1.2 -sSf https://up.ocaml-lang.org/ocamlup-shell.sh | sh
+```
+
+This command will download the `ocamlup-shell.sh` script and run it.
+
+This script (modified from Rustup) has the following options:
+
+```
+USAGE:
+    ocamlup-init [FLAGS] [OPTIONS]
+
+FLAGS:
+    -v, --verbose           Enable verbose output
+    -q, --quiet             Disable progress output
+    -y                      Disable confirmation prompt.
+        --no-modify-path    Don't configure the PATH environment variable
+    -h, --help              Prints help information
+    -V, --version           Prints version information
+
+OPTIONS:
+        --default-switch <default-switch      >    Choose a default switch to install
+        --default-toolchain none                   Do not install any toolchains
+    -c, --component <components>...                Component name to also install
+```
+
+It will detect the architecture and download the corresponding
+`ocamlup-init` binary.
+
+For example:
+
+```
+https://up.ocaml-lang.org/dist/x86_64-unknown-linux-gnu/ocamlup-init
+```
+
+and then run `ocamlup-init` with the same options as given to the
+download script.
+
+## Behavior of `ocamlup-init`
+
+This tool performs the following steps:
+
+* Create $HOME/.opam/bin
+* Copy itself as `ocamlup`, `opam` and `drom` in $HOME/.opam/bin
+* Create a file $HOME/.opam/env with the following content:
+
+```
+#!/bin/sh
+# rustup shell setup
+# affix colons on either side of $PATH to simplify matching
+case ":${PATH}:" in
+    *:"$HOME/.opam/bin":*)
+        ;;
+    *)
+        # Prepending path in case a system-installed opam needs to be overridden
+        export PATH="$HOME/.opam/bin:$PATH"
+        ;;
+esac
+```
+

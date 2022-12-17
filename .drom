@@ -1,0 +1,249 @@
+# Keep this file in your GIT repo to help drom track generated files
+# begin version
+version:0.6.1
+# end version
+
+# hash of toml configuration files
+# used for generation of all files
+af190416ad3645077550a7e0a92f1b31:.
+# end context for .
+
+# begin context for .github/workflows/workflow.yml
+# file .github/workflows/workflow.yml
+4e0c5ab1e66b694db7f0a7e76cd5da0c:.github/workflows/workflow.yml
+# end context for .github/workflows/workflow.yml
+
+# begin context for .gitignore
+# file .gitignore
+b739c6bc572e7b6acb3288ed6cc9e4f0:.gitignore
+# end context for .gitignore
+
+# begin context for .ocamlformat
+# file .ocamlformat
+51f788c6dcd47d33ffec6427b686ed4f:.ocamlformat
+# end context for .ocamlformat
+
+# begin context for .ocamlformat-ignore
+# file .ocamlformat-ignore
+a8d1bcd6f62c6b813b77d3ff8959d8d2:.ocamlformat-ignore
+# end context for .ocamlformat-ignore
+
+# begin context for .ocp-indent
+# file .ocp-indent
+6048407431b8d9baf725ae5365d4c2f2:.ocp-indent
+# end context for .ocp-indent
+
+# begin context for CHANGES.md
+# file CHANGES.md
+ff3316d7dd252c6eba740ab727a4db3f:CHANGES.md
+# end context for CHANGES.md
+
+# begin context for LICENSE.md
+# file LICENSE.md
+3e8c72433d2b8531f0e9716ab0e5fc8a:LICENSE.md
+# end context for LICENSE.md
+
+# begin context for Makefile
+# file Makefile
+0fd79adae3ed8715ccb7ac2b4bbdaf8b:Makefile
+# end context for Makefile
+
+# begin context for README.md
+# file README.md
+6b6480bc458cc671ce60be206f1cb8a4:README.md
+# end context for README.md
+
+# begin context for docs/README.txt
+# file docs/README.txt
+bfbacf00053bb9ab2a6e2ce94ed4a642:docs/README.txt
+# end context for docs/README.txt
+
+# begin context for docs/doc/index.html
+# file docs/doc/index.html
+83c2d82c853cfb811caff88e4271df54:docs/doc/index.html
+# end context for docs/doc/index.html
+
+# begin context for docs/favicon.png
+# file docs/favicon.png
+e739f3026aa997af4026bc428f4c9ef6:docs/favicon.png
+# end context for docs/favicon.png
+
+# begin context for docs/index.html
+# file docs/index.html
+0e5098f8c1c9b6323a692ac4cfced609:docs/index.html
+# end context for docs/index.html
+
+# begin context for docs/sphinx/index.html
+# file docs/sphinx/index.html
+76981072fd9c20b4c474a13652805416:docs/sphinx/index.html
+# end context for docs/sphinx/index.html
+
+# begin context for docs/style.css
+# file docs/style.css
+c8281f46ba9a11d0b61bc8ef67eaa357:docs/style.css
+# end context for docs/style.css
+
+# begin context for drom.toml
+# file drom.toml
+d0de923549576c08869eba5b291a9d69:drom.toml
+# end context for drom.toml
+
+# begin context for dune
+# file dune
+0d57afa9756f983af2551804954af609:dune
+# end context for dune
+
+# begin context for dune-project
+# file dune-project
+2b7399a73ed6a7f1e63626a9e39f7ec7:dune-project
+# end context for dune-project
+
+# begin context for opam/ocamlup-init.opam
+# file opam/ocamlup-init.opam
+abdde2846715e8cc557e875bd17c48fc:opam/ocamlup-init.opam
+# end context for opam/ocamlup-init.opam
+
+# begin context for opam/ocamlup.opam
+# file opam/ocamlup.opam
+7ad922a799d1e4b69fe0b823bfd8475a:opam/ocamlup.opam
+# end context for opam/ocamlup.opam
+
+# begin context for opam/ocamlup_lib.opam
+# file opam/ocamlup_lib.opam
+1aaf00f94e4174e1066fc4af4f1f2802:opam/ocamlup_lib.opam
+# end context for opam/ocamlup_lib.opam
+
+# begin context for scripts/after.sh
+# file scripts/after.sh
+1112fbe7067fce342365a25613b5659d:scripts/after.sh
+# end context for scripts/after.sh
+
+# begin context for scripts/before.sh
+# file scripts/before.sh
+ae050b3099ac0b43d7c7f4295f6b2319:scripts/before.sh
+# end context for scripts/before.sh
+
+# begin context for scripts/copy-bin.sh
+# file scripts/copy-bin.sh
+bb3a9d286f0dc64021db4194427263ee:scripts/copy-bin.sh
+# end context for scripts/copy-bin.sh
+
+# begin context for sphinx/_static/css/fixes.css
+# file sphinx/_static/css/fixes.css
+20bbe7a5dbb3c3278a1511d960616fe5:sphinx/_static/css/fixes.css
+# end context for sphinx/_static/css/fixes.css
+
+# begin context for sphinx/about.rst
+# file sphinx/about.rst
+0167bb748505a6a76e22e22c6b4717e5:sphinx/about.rst
+# end context for sphinx/about.rst
+
+# begin context for sphinx/conf.py
+# file sphinx/conf.py
+3fc04c26296bf6fe11cada417539a74e:sphinx/conf.py
+# end context for sphinx/conf.py
+
+# begin context for sphinx/index.rst
+# file sphinx/index.rst
+cad880d9ca0cf084d8707e2a5ad0583a:sphinx/index.rst
+# end context for sphinx/index.rst
+
+# begin context for sphinx/install.rst
+# file sphinx/install.rst
+57def6cc5324bb8ec168ce5cc419ad76:sphinx/install.rst
+# end context for sphinx/install.rst
+
+# begin context for sphinx/license.rst
+# file sphinx/license.rst
+abc6ae223dbcd2a710665e948f370518:sphinx/license.rst
+# end context for sphinx/license.rst
+
+# begin context for src/ocamlup-init/dune
+# file src/ocamlup-init/dune
+b2d270a975b2b928cf6c9a2c455621de:src/ocamlup-init/dune
+# end context for src/ocamlup-init/dune
+
+# begin context for src/ocamlup-init/index.mld
+# file src/ocamlup-init/index.mld
+6e17331eb065c0fd775f5deec0b99e4c:src/ocamlup-init/index.mld
+# end context for src/ocamlup-init/index.mld
+
+# begin context for src/ocamlup/dune
+# file src/ocamlup/dune
+9c329baebfbb627dc7f660c102883fd9:src/ocamlup/dune
+# end context for src/ocamlup/dune
+
+# begin context for src/ocamlup/index.mld
+# file src/ocamlup/index.mld
+bc5eb12ba8322d0eec9a00a773592094:src/ocamlup/index.mld
+# end context for src/ocamlup/index.mld
+
+# begin context for src/ocamlup/main.ml
+# file src/ocamlup/main.ml
+2003b38aafc967f48718f7d0675917f6:src/ocamlup/main.ml
+# end context for src/ocamlup/main.ml
+
+# begin context for src/ocamlup_lib/dune
+# file src/ocamlup_lib/dune
+ce3df31cd9d5a561754690b54cb05103:src/ocamlup_lib/dune
+# end context for src/ocamlup_lib/dune
+
+# begin context for src/ocamlup_lib/index.mld
+# file src/ocamlup_lib/index.mld
+cb1a32609ee569c242cde10c887243e5:src/ocamlup_lib/index.mld
+# end context for src/ocamlup_lib/index.mld
+
+# begin context for src/ocamlup_lib/main.ml
+# file src/ocamlup_lib/main.ml
+e9acc884df7436bfe198a1ab353fb991:src/ocamlup_lib/main.ml
+# end context for src/ocamlup_lib/main.ml
+
+# begin context for src/ocamlup_lib/package.toml
+# file src/ocamlup_lib/package.toml
+01748e52243bf9131f8145bba795f831:src/ocamlup_lib/package.toml
+# end context for src/ocamlup_lib/package.toml
+
+# begin context for src/ocamlup_lib/version.mlt
+# file src/ocamlup_lib/version.mlt
+940d29cde7f16cd0916ed1d5f9c41154:src/ocamlup_lib/version.mlt
+# end context for src/ocamlup_lib/version.mlt
+
+# begin context for test/expect-tests/dune
+# file test/expect-tests/dune
+185e192c09dc1548e7d507bf756f8aef:test/expect-tests/dune
+# end context for test/expect-tests/dune
+
+# begin context for test/expect-tests/test.ml
+# file test/expect-tests/test.ml
+24150bafd4bec9b34e6c2987843f0d50:test/expect-tests/test.ml
+# end context for test/expect-tests/test.ml
+
+# begin context for test/inline-tests/dune
+# file test/inline-tests/dune
+af17fbc9cda0e21d7f51e579ef0a979f:test/inline-tests/dune
+# end context for test/inline-tests/dune
+
+# begin context for test/inline-tests/test.ml
+# file test/inline-tests/test.ml
+37b8bc6035cda6302a80178c61f9626e:test/inline-tests/test.ml
+# end context for test/inline-tests/test.ml
+
+# begin context for test/output-tests/dune
+# file test/output-tests/dune
+6f6bade45da3375b2f7ace15d994bc2f:test/output-tests/dune
+# end context for test/output-tests/dune
+
+# begin context for test/output-tests/test1.expected
+# file test/output-tests/test1.expected
+dc8d6157230e9ef8e965865f990fbc49:test/output-tests/test1.expected
+# end context for test/output-tests/test1.expected
+
+# begin context for test/output-tests/test2.expected
+# file test/output-tests/test2.expected
+ee63957b3b77455a12e6c269a5032c3f:test/output-tests/test2.expected
+# end context for test/output-tests/test2.expected
+
+# begin context for test/output-tests/test2.ml
+# file test/output-tests/test2.ml
+e8eaab7626ef0aace5e570fffe81f869:test/output-tests/test2.ml
+# end context for test/output-tests/test2.ml
