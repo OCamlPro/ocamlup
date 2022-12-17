@@ -14,7 +14,7 @@ open Ez_file.V1
 open EzFile.OP
 
 let env_content = {|#!/bin/sh
-# rustup shell setup
+# ocamlup shell setup
 # affix colons on either side of $PATH to simplify matching
 case ":${PATH}:" in
     *:"$HOME/.ocamlup/bin":*)

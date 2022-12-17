@@ -51,21 +51,35 @@ download script.
 
 This tool performs the following steps:
 
-* Create $HOME/.opam/bin
-* Copy itself as `ocamlup`, `opam` and `drom` in $HOME/.opam/bin
-* Create a file $HOME/.opam/env with the following content:
+* Create $HOME/.ocamlup/bin
+* Promote itself as `ocamlup-init`, `opam`, `ocp-indent` and `drom` in $HOME/.ocamlup/bin
+* Create a file $HOME/.ocamlup/env with the following content:
 
 ```
 #!/bin/sh
-# rustup shell setup
+# ocamlup shell setup
 # affix colons on either side of $PATH to simplify matching
 case ":${PATH}:" in
-    *:"$HOME/.opam/bin":*)
+    *:"$HOME/.ocamlup/bin":*)
         ;;
     *)
         # Prepending path in case a system-installed opam needs to be overridden
-        export PATH="$HOME/.opam/bin:$PATH"
+        export PATH="$HOME/.ocamlup/bin:$PATH"
         ;;
 esac
 ```
+
+* Promote other tools as hardlink to itself in
+$HOME/.ocamlup/bin. Call `opam exec -- ARGS` when called, checking an
+env variable OCAMLUP_INSIDE to avoid infinite loops in call
+
+* Configure opam with no compiler
+
+* Install opam-bin
+
+* Detect environment and setup opam-bin configuration to a
+  corresponding binary repository
+
+* Create a first switch in opam with the latest compiler available
+
 
