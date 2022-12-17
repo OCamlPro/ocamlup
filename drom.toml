@@ -10,7 +10,6 @@ github-organization = "ocamlpro"
 license = "LGPL2"
 min-edition = "4.07.0"
 name = "ocamlup"
-skeleton = "program"
 synopsis = "The ocamlup project"
 version = "0.1.0"
 
@@ -68,8 +67,12 @@ share-dirs = ["share"]
 # ...
 
 [[package]]
+dir = "src/ocamlup"
+# edit 'src/ocamlup-init/package.toml' for package-specific options
+
+[[package]]
 dir = "src/ocamlup-init"
-# edit 'src/ocamlup/package.toml' for package-specific options
+# edit 'src/ocamlup-init/package.toml' for package-specific options
 
 [[package]]
 dir = "src/ocamlup_lib"

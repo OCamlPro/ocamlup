@@ -75,11 +75,25 @@ env variable OCAMLUP_INSIDE to avoid infinite loops in call
 
 * Configure opam with no compiler
 
+$ opam init --bare -n
+
 * Install opam-bin
+
+$ opam-bin install
 
 * Detect environment and setup opam-bin configuration to a
   corresponding binary repository
 
 * Create a first switch in opam with the latest compiler available
 
+base-bigarray.base
+base-threads.base
+base-unix.base
+cache
+ocaml.4.14.0
+ocaml-base-compiler.4.14.0
+ocaml-config.2
+ocaml-options-vanilla.1
+
+* Configure drom (install its skeleton files)
 

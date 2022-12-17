@@ -46,10 +46,17 @@ gen-version = "version.ml"
 #   ez_file = ">=0.1 <1.3"
 #   base-unix = { libname = "unix", version = ">=base" } 
 [dependencies]
-ez_file = ""
 cmdliner = ""
-base-unix = { libname = "unix", version = ">=base" } 
-ocp-indent = { libname = "ocp-indent.lexer ocp-indent.lib ocp-indent.dynlink" }
+ez_cmdliner = "0.2.0"
+ez_file = "0.3.0"
+drom_lib = ""
+opam-client = ""
+opam_bin_lib = "1.2.0"
+[dependencies.base-unix]
+libname = "unix"
+version = ">=base"
+[dependencies.ocp-indent]
+libname = "ocp-indent.lexer ocp-indent.lib ocp-indent.dynlink"
 
 # package tools dependencies
 [tools]
@@ -65,4 +72,4 @@ ocp-indent = { libname = "ocp-indent.lexer ocp-indent.lib ocp-indent.dynlink" }
 #  no-opam-doc = "yes" 
 #  gen-opam = "some" | "all" 
 [fields]
-
+# ...

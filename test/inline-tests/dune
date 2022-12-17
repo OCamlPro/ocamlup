@@ -6,4 +6,4 @@
   (pps ppx_inline_test))
  (inline_tests
   (modes best)) ; add js for testing with nodejs
- (libraries ocamlup ocamlup_lib))
+ (libraries ocamlup_lib))

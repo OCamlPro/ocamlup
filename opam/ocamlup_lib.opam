@@ -38,8 +38,12 @@ install: [
 depends: [
   "ocaml" {>= "4.07.0"}
   "dune" {>= "2.7.0"}
+  "opam_bin_lib" {>= "1.2.0" & < "2.0.0"}
+  "opam-client" {}
   "ocp-indent" {}
-  "ez_file" {}
+  "ez_file" {>= "0.3.0" & < "1.0.0"}
+  "ez_cmdliner" {>= "0.2.0" & < "1.0.0"}
+  "drom_lib" {}
   "cmdliner" {}
   "base-unix" {>= "base"}
   "ppx_inline_test" {with-test}

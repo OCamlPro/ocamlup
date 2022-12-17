@@ -10,4 +10,20 @@
 (*                                                                        *)
 (**************************************************************************)
 
-let () = Ocamlup_lib.Main.main ()
+let verbosity = ref 1
+let verbose n = !verbosity >= n
+
+open Ezcmd.V2
+
+module PROGRAM = struct
+  let command = "ocamlup"
+  let about = "ocamlup COMMAND COMMAND-OPTIONS"
+  let set_verbosity n = verbosity := n
+  let get_verbosity () = !verbosity
+  let backtrace_var = Some "OCAMLUP_BACKTRACE"
+  let usage = "Create and manage an OCaml installation in User-Space"
+  let version = Version.version
+  exception Error = Error.Error
+end
+module MAIN = EZCMD.MAKE( PROGRAM )
+include PROGRAM

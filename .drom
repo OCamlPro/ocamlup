@@ -5,7 +5,7 @@ version:0.6.1
 
 # hash of toml configuration files
 # used for generation of all files
-af190416ad3645077550a7e0a92f1b31:.
+e62d11e2a12d7e4711f3d08c10c9ec31:.
 # end context for .
 
 # begin context for .github/workflows/workflow.yml
@@ -15,7 +15,7 @@ af190416ad3645077550a7e0a92f1b31:.
 
 # begin context for .gitignore
 # file .gitignore
-b739c6bc572e7b6acb3288ed6cc9e4f0:.gitignore
+649fa8c327548b576986d187fc7a3cf6:.gitignore
 # end context for .gitignore
 
 # begin context for .ocamlformat
@@ -85,7 +85,7 @@ c8281f46ba9a11d0b61bc8ef67eaa357:docs/style.css
 
 # begin context for drom.toml
 # file drom.toml
-d0de923549576c08869eba5b291a9d69:drom.toml
+57221d02c9ab58e1cf7bf6429a11edf1:drom.toml
 # end context for drom.toml
 
 # begin context for dune
@@ -95,22 +95,22 @@ d0de923549576c08869eba5b291a9d69:drom.toml
 
 # begin context for dune-project
 # file dune-project
-2b7399a73ed6a7f1e63626a9e39f7ec7:dune-project
+7d13a09b195604177e758348dc2015db:dune-project
 # end context for dune-project
 
 # begin context for opam/ocamlup-init.opam
 # file opam/ocamlup-init.opam
-abdde2846715e8cc557e875bd17c48fc:opam/ocamlup-init.opam
+db64a6a8cf072662106b3b87d401bc2f:opam/ocamlup-init.opam
 # end context for opam/ocamlup-init.opam
 
 # begin context for opam/ocamlup.opam
 # file opam/ocamlup.opam
-7ad922a799d1e4b69fe0b823bfd8475a:opam/ocamlup.opam
+7748f654de3387b999633330d65c58e6:opam/ocamlup.opam
 # end context for opam/ocamlup.opam
 
 # begin context for opam/ocamlup_lib.opam
 # file opam/ocamlup_lib.opam
-1aaf00f94e4174e1066fc4af4f1f2802:opam/ocamlup_lib.opam
+b7e1ac3054c82e6caddde6a143aea7fa:opam/ocamlup_lib.opam
 # end context for opam/ocamlup_lib.opam
 
 # begin context for scripts/after.sh
@@ -160,7 +160,7 @@ abc6ae223dbcd2a710665e948f370518:sphinx/license.rst
 
 # begin context for src/ocamlup-init/dune
 # file src/ocamlup-init/dune
-b2d270a975b2b928cf6c9a2c455621de:src/ocamlup-init/dune
+885289741e231e3fd0459b9bfb397743:src/ocamlup-init/dune
 # end context for src/ocamlup-init/dune
 
 # begin context for src/ocamlup-init/index.mld
@@ -168,14 +168,19 @@ b2d270a975b2b928cf6c9a2c455621de:src/ocamlup-init/dune
 6e17331eb065c0fd775f5deec0b99e4c:src/ocamlup-init/index.mld
 # end context for src/ocamlup-init/index.mld
 
+# begin context for src/ocamlup-init/package.toml
+# file src/ocamlup-init/package.toml
+41cb406e5c9f986e72df1c848a075cc3:src/ocamlup-init/package.toml
+# end context for src/ocamlup-init/package.toml
+
 # begin context for src/ocamlup/dune
 # file src/ocamlup/dune
-9c329baebfbb627dc7f660c102883fd9:src/ocamlup/dune
+f96086dbe5040daa9839f097ab9c8597:src/ocamlup/dune
 # end context for src/ocamlup/dune
 
 # begin context for src/ocamlup/index.mld
 # file src/ocamlup/index.mld
-bc5eb12ba8322d0eec9a00a773592094:src/ocamlup/index.mld
+16467b2100cb657fa6d780471be74b5c:src/ocamlup/index.mld
 # end context for src/ocamlup/index.mld
 
 # begin context for src/ocamlup/main.ml
@@ -185,7 +190,7 @@ bc5eb12ba8322d0eec9a00a773592094:src/ocamlup/index.mld
 
 # begin context for src/ocamlup_lib/dune
 # file src/ocamlup_lib/dune
-ce3df31cd9d5a561754690b54cb05103:src/ocamlup_lib/dune
+e89f366e255677a229d14ba5871cfafd:src/ocamlup_lib/dune
 # end context for src/ocamlup_lib/dune
 
 # begin context for src/ocamlup_lib/index.mld
@@ -200,7 +205,7 @@ e9acc884df7436bfe198a1ab353fb991:src/ocamlup_lib/main.ml
 
 # begin context for src/ocamlup_lib/package.toml
 # file src/ocamlup_lib/package.toml
-01748e52243bf9131f8145bba795f831:src/ocamlup_lib/package.toml
+e3fc328078e4e9b789a49a3bf1a0ac2a:src/ocamlup_lib/package.toml
 # end context for src/ocamlup_lib/package.toml
 
 # begin context for src/ocamlup_lib/version.mlt
@@ -210,7 +215,7 @@ e9acc884df7436bfe198a1ab353fb991:src/ocamlup_lib/main.ml
 
 # begin context for test/expect-tests/dune
 # file test/expect-tests/dune
-185e192c09dc1548e7d507bf756f8aef:test/expect-tests/dune
+b8abdaddd34afd16104add618659e7c5:test/expect-tests/dune
 # end context for test/expect-tests/dune
 
 # begin context for test/expect-tests/test.ml
@@ -220,7 +225,7 @@ e9acc884df7436bfe198a1ab353fb991:src/ocamlup_lib/main.ml
 
 # begin context for test/inline-tests/dune
 # file test/inline-tests/dune
-af17fbc9cda0e21d7f51e579ef0a979f:test/inline-tests/dune
+3bb810103f8187fb41ecfc6ccc4c852d:test/inline-tests/dune
 # end context for test/inline-tests/dune
 
 # begin context for test/inline-tests/test.ml
@@ -230,7 +235,7 @@ af17fbc9cda0e21d7f51e579ef0a979f:test/inline-tests/dune
 
 # begin context for test/output-tests/dune
 # file test/output-tests/dune
-6f6bade45da3375b2f7ace15d994bc2f:test/output-tests/dune
+4627bea5376b5cad066f25d1c2e8d785:test/output-tests/dune
 # end context for test/output-tests/dune
 
 # begin context for test/output-tests/test1.expected

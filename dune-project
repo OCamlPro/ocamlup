@@ -14,6 +14,7 @@
  (description "This is the description\nof the ocamlup OCaml project\n")
  (depends
    (ocaml (>= 4.07.0))
+   (ocamlup_lib (= version))
    ppx_inline_test
    ppx_expect
    odoc
@@ -27,10 +28,7 @@
  (description "This is the description\nof the ocamlup OCaml project\n")
  (depends
    (ocaml (>= 4.07.0))
-   opam-client
    (ocamlup_lib (= version))
-   ez_file
-   drom_lib
    ppx_inline_test
    ppx_expect
    odoc
@@ -44,8 +42,12 @@
  (description "This is the description\nof the ocamlup OCaml project\n")
  (depends
    (ocaml (>= 4.07.0))
+   (opam_bin_lib (and (>= 1.2.0) (< 2.0.0)))
+   opam-client
    ocp-indent
-   ez_file
+   (ez_file (and (>= 0.3.0) (< 1.0.0)))
+   (ez_cmdliner (and (>= 0.2.0) (< 1.0.0)))
+   drom_lib
    cmdliner
    (base-unix ( >= base ))
    ppx_inline_test

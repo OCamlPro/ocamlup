@@ -3,7 +3,7 @@
   (name main)
   (public_name ocamlup-init)
   (package ocamlup-init)
-  (libraries opam-client ocamlup_lib ez_file drom_lib )
+  (libraries ocamlup_lib )
   
   
   )

@@ -124,6 +124,9 @@ let main () =
       ".zshrc" ;
     ];
 
+  Call.command "opam init --core -n";
+  Call.command "opam-bin install";
+  Call.command "opam-bin config --enable-share";
 
   Array.iteri (fun i s ->
       Printf.eprintf "argv[%d] = %S\n%!" i s
@@ -150,3 +153,24 @@ OPTIONS:
     -c, --component <components>...           Component name to also install
 EOF
 *)
+
+open Ezcmd.V2
+(* open EZCMD.TYPES *)
+
+
+let cmd =
+  let args = [] in
+  let action = (fun () -> assert false) in
+  let doc = "Initialize OCaml installation in User-Space" in
+  let man =  [
+    `S "DESCRIPTION";
+    `Blocks [
+      `P doc ;
+    ]
+  ] in
+  EZCMD.sub "init"
+    action
+    ~args
+    ~doc
+    ~version:Version.version
+    ~man

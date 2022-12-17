@@ -1,6 +1,6 @@
 
 # name of package
-name = "ocamlup-init"
+name = "ocamlup"
 skeleton = "driver"
 
 # version if different from project version
