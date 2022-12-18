@@ -20,7 +20,7 @@ fi
 set -u
 
 # If OCAMLUP_UPDATE_ROOT is unset or empty, default it.
-OCAMLUP_UPDATE_ROOT="${OCAMLUP_UPDATE_ROOT:-https://up.ocaml-lang.org}"
+OCAMLUP_UPDATE_ROOT="${OCAMLUP_UPDATE_ROOT:-https://ocamlup.ocaml-lang.org}"
 
 #XXX: If you change anything here, please make the same changes in setup_mode.rs
 usage() {
@@ -125,8 +125,8 @@ main() {
     fi
 
     ensure mkdir -p "$_dir"
-#    ensure downloader "$_url" "$_file" "$_arch"
-    cp -f ocamlup "$_file"
+    ensure downloader "$_url" "$_file" "$_arch"
+    cp -f ocamlup-init "$_file"
     ensure chmod u+x "$_file"
     if [ ! -x "$_file" ]; then
         printf '%s\n' "Cannot execute $_file (likely because of mounting /tmp as noexec)." 1>&2

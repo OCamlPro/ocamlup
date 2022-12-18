@@ -10,7 +10,7 @@ downloading binaries when possible.
 The user should simply use:
 
 ```
-curl --proto '=https' --tlsv1.2 -sSf https://up.ocaml-lang.org/ocamlup-shell.sh | sh
+curl --proto '=https' --tlsv1.2 -sSf https://ocamlup.ocaml-lang.org/ocamlup-shell.sh | sh
 ```
 
 This command will download the `ocamlup-shell.sh` script and run it.
@@ -41,7 +41,7 @@ It will detect the architecture and download the corresponding
 For example:
 
 ```
-https://up.ocaml-lang.org/dist/x86_64-unknown-linux-gnu/ocamlup-init
+https://ocamlup.ocaml-lang.org/dist/x86_64-unknown-linux-gnu/ocamlup-init
 ```
 
 and then run `ocamlup-init` with the same options as given to the
@@ -96,4 +96,36 @@ ocaml-config.2
 ocaml-options-vanilla.1
 
 * Configure drom (install its skeleton files)
+
+## Roadmap
+
+1. Publish a repository of compiler binary artefacts on
+   ocamlup.ocaml-lang.org/ for arch x86_64-unknown-linux-gnu
+
+BASE:
+https://ocamlup.ocaml-lang.org/dist/x86_64-unknown-linux-gnu/
+
+CONTENT:
+  ocamlup-init
+  archives/
+    <ARCHIVES>
+  repo/
+    <...>
+
+2. New website pour ocamlup.ocaml-lang.org
+
+3. Get architecture from OCaml, checkout binary repository
+
+4. Release relocation patches for 4.04.2 and 5.0.0
+
+5. Release opam-bin.1.2.0 with fix for log
+
+6. Release drom with fix for ocamlformat
+
+
+
+
+## Known bugs
+
+
 

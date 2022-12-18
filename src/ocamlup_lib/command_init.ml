@@ -124,7 +124,7 @@ let main () =
       ".zshrc" ;
     ];
 
-  Call.command "opam init --core -n";
+  Call.command "opam init --bare -n";
   Call.command "opam-bin install";
   Call.command "opam-bin config --enable-share";
 
