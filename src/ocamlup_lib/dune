@@ -4,7 +4,7 @@
   (name ocamlup_lib)
   (public_name ocamlup_lib)
   (wrapped true)
-  (libraries opam_bin_lib opam-client ocp-indent.lexer ocp-indent.lib ocp-indent.dynlink ez_file ez_cmdliner drom_lib cmdliner unix )
+  (libraries opam_bin_lib opam-client ocp-indent.lexer ocp-indent.lib ez_file ez_cmdliner drom_lib cmdliner unix )
   
   
   )

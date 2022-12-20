@@ -26,7 +26,7 @@ let cmd =
       `P doc ;
     ]
   ] in
-  EZCMD.sub "get arch"
+  EZCMD.sub "arch get"
     action
     ~args
     ~doc

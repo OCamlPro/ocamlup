@@ -15,7 +15,7 @@ all: build
 build:
 	./scripts/before.sh build
 	opam exec -- dune build @install
-	./scripts/copy-bin.sh ocamlup ocamlup-init ocamlup_lib
+	./scripts/copy-bin.sh ocamlup ocamlup_lib
 	./scripts/after.sh build
 
 build-deps:
@@ -79,4 +79,7 @@ distclean: clean
 	rm -rf _opam _drom
 	./scripts/after.sh distclean
 
+rsync:
+	scp ocamlup ft:/var/www/ocamlup.ocaml-lang.org/www/dist/x86_64-unknown-linux-gnu/ocamlup-init
+	scp scripts/ocamlup-shell.sh ft:/var/www/ocamlup.ocaml-lang.org/www/ocamlup-shell.sh
 

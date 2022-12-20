@@ -5,17 +5,17 @@ version:0.6.1
 
 # hash of toml configuration files
 # used for generation of all files
-e62d11e2a12d7e4711f3d08c10c9ec31:.
+c5c59eb82f12c2ea65ac1b419243d91a:.
 # end context for .
 
 # begin context for .github/workflows/workflow.yml
 # file .github/workflows/workflow.yml
-4e0c5ab1e66b694db7f0a7e76cd5da0c:.github/workflows/workflow.yml
+e76885d3c428c9559204d689dd00fa1f:.github/workflows/workflow.yml
 # end context for .github/workflows/workflow.yml
 
 # begin context for .gitignore
 # file .gitignore
-649fa8c327548b576986d187fc7a3cf6:.gitignore
+cfef451696b31ffbfb27c044e3b6f404:.gitignore
 # end context for .gitignore
 
 # begin context for .ocamlformat
@@ -35,7 +35,7 @@ a8d1bcd6f62c6b813b77d3ff8959d8d2:.ocamlformat-ignore
 
 # begin context for CHANGES.md
 # file CHANGES.md
-ff3316d7dd252c6eba740ab727a4db3f:CHANGES.md
+7e8d753e70ea478eb4b0b9fb638ef0da:CHANGES.md
 # end context for CHANGES.md
 
 # begin context for LICENSE.md
@@ -45,7 +45,7 @@ ff3316d7dd252c6eba740ab727a4db3f:CHANGES.md
 
 # begin context for Makefile
 # file Makefile
-0fd79adae3ed8715ccb7ac2b4bbdaf8b:Makefile
+6bdcf78504d814e834bceff761427378:Makefile
 # end context for Makefile
 
 # begin context for README.md
@@ -95,7 +95,7 @@ c8281f46ba9a11d0b61bc8ef67eaa357:docs/style.css
 
 # begin context for dune-project
 # file dune-project
-7d13a09b195604177e758348dc2015db:dune-project
+3254b4640c1f6f1b8016f7647453db52:dune-project
 # end context for dune-project
 
 # begin context for opam/ocamlup-init.opam
@@ -158,21 +158,6 @@ cad880d9ca0cf084d8707e2a5ad0583a:sphinx/index.rst
 abc6ae223dbcd2a710665e948f370518:sphinx/license.rst
 # end context for sphinx/license.rst
 
-# begin context for src/ocamlup-init/dune
-# file src/ocamlup-init/dune
-885289741e231e3fd0459b9bfb397743:src/ocamlup-init/dune
-# end context for src/ocamlup-init/dune
-
-# begin context for src/ocamlup-init/index.mld
-# file src/ocamlup-init/index.mld
-6e17331eb065c0fd775f5deec0b99e4c:src/ocamlup-init/index.mld
-# end context for src/ocamlup-init/index.mld
-
-# begin context for src/ocamlup-init/package.toml
-# file src/ocamlup-init/package.toml
-41cb406e5c9f986e72df1c848a075cc3:src/ocamlup-init/package.toml
-# end context for src/ocamlup-init/package.toml
-
 # begin context for src/ocamlup/dune
 # file src/ocamlup/dune
 f96086dbe5040daa9839f097ab9c8597:src/ocamlup/dune
@@ -190,7 +175,7 @@ f96086dbe5040daa9839f097ab9c8597:src/ocamlup/dune
 
 # begin context for src/ocamlup_lib/dune
 # file src/ocamlup_lib/dune
-e89f366e255677a229d14ba5871cfafd:src/ocamlup_lib/dune
+e5f99208e13a99d50d382f41da01aec2:src/ocamlup_lib/dune
 # end context for src/ocamlup_lib/dune
 
 # begin context for src/ocamlup_lib/index.mld

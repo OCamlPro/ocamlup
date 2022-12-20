@@ -10,19 +10,18 @@
 (*                                                                        *)
 (**************************************************************************)
 
-
-let ocamlup_main () =
+let ocamlup_main argv =
   Printexc.record_backtrace true;
   let commands = [
     Command_init.cmd ;
     Command_footprint.cmd ;
     Command_arch.cmd ;
+    Command_clean.cmd ;
   ] in
 
   let common_args = [
   ] in
 
-  let argv = Sys.argv in
   try
     Globals.MAIN.main
       ~on_error: (fun () -> () )
@@ -41,12 +40,12 @@ let ocamlup_main () =
       Printf.eprintf "fatal exception %s\n%s\n%!" error bt;
       exit 2
 
-open Ez_file.V1
-open EzFile.OP
+(* open Ez_file.V1 *)
+(* open EzFile.OP *)
 
 let main () =
-  let fullname = Sys.executable_name in
-  Printf.eprintf "Wrapper %s\n%!" fullname ;
+  (* We used to use Sys.executable_name, but it does not work with symbolic links *)
+  let fullname = Sys.argv.(0) in
   let basename = Filename.basename fullname in
   let basename = String.lowercase_ascii basename in
   match basename with
@@ -58,13 +57,20 @@ let main () =
     -> Opam_bin_lib.Main.main ()
   | "drom"
   | "drom.exe"
-    -> Drom_lib.Main.main ()
+    ->
+      Drom_lib.Main.main ()
   | "ocamlup-init"
   | "ocamlup-init.exe"
-    -> Command_init.main ()
+    ->
+      let argv = Array.concat [
+          [| Sys.argv.(0) ; "init" |];
+          Array.sub Sys.argv 1 (Array.length Sys.argv - 1 )
+        ]
+      in
+      ocamlup_main argv
   | "ocamlup"
   | "ocamlup.exe"
-    -> ocamlup_main ()
+    -> ocamlup_main Sys.argv
   | "ocp-indent"
   | "ocp-indent.exe"
     -> IndentMain.main ()
@@ -83,14 +89,17 @@ let main () =
         | exception Not_found -> ()
       end;
       Unix.putenv "OCAMLUP_INSIDE" "x";
-      let new_exe = ( Filename.dirname fullname ) // "opam" in
+(*      let new_exe = ( Filename.dirname fullname ) // "opam" in *)
+      let new_exe = "opam" in
       let argv =
         Array.concat [ [| new_exe ; "exec" ; "--" ; basename |];
                        Array.sub Sys.argv 1  (Array.length Sys.argv-1)
                      ]
       in
+      (*
       Printf.eprintf "Wrapper: exe = %S\n%!" new_exe ;
       Array.iteri (fun i s ->
           Printf.eprintf "Wrapper: arg[%d] = %S\n%!" i s
         ) argv ;
+*)
       Unix.execvp new_exe argv

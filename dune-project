@@ -23,20 +23,6 @@
  )
 
 (package
- (name ocamlup-init)
- (synopsis "The ocamlup project")
- (description "This is the description\nof the ocamlup OCaml project\n")
- (depends
-   (ocaml (>= 4.07.0))
-   (ocamlup_lib (= version))
-   ppx_inline_test
-   ppx_expect
-   odoc
-   ocamlformat
-  )
- )
-
-(package
  (name ocamlup_lib)
  (synopsis "The ocamlup project")
  (description "This is the description\nof the ocamlup OCaml project\n")

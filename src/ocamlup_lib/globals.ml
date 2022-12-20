@@ -27,3 +27,14 @@ module PROGRAM = struct
 end
 module MAIN = EZCMD.MAKE( PROGRAM )
 include PROGRAM
+
+let eprintln v fmt =
+  Printf.kprintf (fun s ->
+      if verbose v then
+        Printf.eprintf "%s\n%!" s
+    ) fmt
+
+let display fmt =
+  Printf.kprintf (fun s ->
+      Printf.printf "%s\n%!" s
+    ) fmt

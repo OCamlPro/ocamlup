@@ -13,12 +13,16 @@
 open Globals
 open Ez_file.V1
 
-let command fmt =
+let command ?on_error fmt =
   Printf.kprintf (fun cmd ->
       Printf.eprintf "%s\n%!" cmd;
       let retcode = Sys.command cmd in
-      if retcode <> 0 then
-        Printf.eprintf "  returned errpr %d\n%!" retcode
+      if retcode <> 0 then begin
+        Printf.eprintf "  returned error %d\n%!" retcode;
+        match on_error with
+        | None -> ()
+        | Some f -> f retcode
+      end
     ) fmt
 
 let tmpfile () =

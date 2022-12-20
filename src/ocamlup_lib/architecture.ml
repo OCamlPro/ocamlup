@@ -287,4 +287,4 @@ get_architecture() {
 
 *)
 
-let get () = "unknown"
+let get () = "x86_64-unknown-linux-gnu"

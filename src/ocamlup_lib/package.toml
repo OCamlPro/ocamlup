@@ -56,7 +56,7 @@ opam_bin_lib = "1.2.0"
 libname = "unix"
 version = ">=base"
 [dependencies.ocp-indent]
-libname = "ocp-indent.lexer ocp-indent.lib ocp-indent.dynlink"
+libname = "ocp-indent.lexer ocp-indent.lib"
 
 # package tools dependencies
 [tools]

@@ -15,26 +15,6 @@ curl --proto '=https' --tlsv1.2 -sSf https://ocamlup.ocaml-lang.org/ocamlup-shel
 
 This command will download the `ocamlup-shell.sh` script and run it.
 
-This script (modified from Rustup) has the following options:
-
-```
-USAGE:
-    ocamlup-init [FLAGS] [OPTIONS]
-
-FLAGS:
-    -v, --verbose           Enable verbose output
-    -q, --quiet             Disable progress output
-    -y                      Disable confirmation prompt.
-        --no-modify-path    Don't configure the PATH environment variable
-    -h, --help              Prints help information
-    -V, --version           Prints version information
-
-OPTIONS:
-        --default-switch <default-switch      >    Choose a default switch to install
-        --default-toolchain none                   Do not install any toolchains
-    -c, --component <components>...                Component name to also install
-```
-
 It will detect the architecture and download the corresponding
 `ocamlup-init` binary.
 
@@ -116,16 +96,33 @@ CONTENT:
 
 3. Get architecture from OCaml, checkout binary repository
 
+opam remote add ocamlup https://ocamlup.ocaml-lang.org/dist/x86_64-unknown-linux-gnu/repo --all --set-default
+
 4. Release relocation patches for 4.04.2 and 5.0.0
 
 5. Release opam-bin.1.2.0 with fix for log
 
 6. Release drom with fix for ocamlformat
 
+7. Patch ocaml-4.14.0 and ocaml-5.00.0 to decrease the binary size of their archive
+   7.1 share binaries in bin/
+   7.2 remove .cmt when .cmti is available
+
+2022/12/19:18:08:24: Could not find cached binary package ocaml-base-compiler.4.13.1+bin+efcd71d2+
 
 
+## Working features
+
+* Tested on  `x86_64-unknown-linux-gnu` (Linux Ubuntu 22)
+  * Binary versions for OCaml between 4.02.0 and 5.0.0
+* Features:
+  * `opam` working correctly, no modification
+  * `opam-bin` working correctly, no modification
+  * `ocp-indent` working correctly, but `findlib` support disabled, so no plugins
+  * `drom` working correctly, shared files in `.ocamlup/share/drom`
 
 ## Known bugs
 
+* Currently, arch is always detected as `x86_64-unknown-linux-gnu`
 
 
