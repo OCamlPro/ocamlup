@@ -30,6 +30,16 @@ let shell_config_files =
   ".zprofile" ;
 ]
 
+let ocaml_platform_binaries = [
+  "dune" ;
+  "odoc" ;
+  "ocamlformat" ;
+  "dune-release" ;
+  "ocamllsp" ;
+  "merlin" ;
+  "utop" ;
+]
+
 let bin_aliases = [
   "ocamlup-init" ;
   "opam" ;
@@ -59,13 +69,10 @@ let bin_aliases = [
   "ocamlyacc" ;
 *)
 
-  (* promotions of community tools *)
-  "merlin" ;
-  "dune" ;
   "ocp-index" ;
   "menhir" ;
-]
-
+] @
+  ocaml_platform_binaries
 
 let env_content = {|#!/bin/sh
 # ocamlup shell setup
@@ -80,41 +87,28 @@ case ":${PATH}:" in
 esac
 |}
 
-let rec mkdir dir =
-  if not (Sys.file_exists dir) then
-    let parent_dir = Filename.dirname dir in
-    mkdir parent_dir;
-    EzFile.mkdir dir 0o755
-
 let action ?repo_url ~src_flag ~editions ~no_modify_path () =
 
-  let on_error retcode =
-    Printf.eprintf "Exiting because last command failed with code %d\n%!"
-      retcode;
-    exit retcode in
+  let on_error = Misc.on_error_exit in
+  Misc.display "Running ocamlup-init!";
 
-  Globals.display "Running ocamlup-init!";
-  let home_dir = Sys.getenv "HOME" in
-  let ocamlup_dir = home_dir // ".ocamlup" in
-  let ocamlup_bin_dir = ocamlup_dir // "bin" in
-
-  mkdir ocamlup_bin_dir;
+  Misc.mkdir Globals.ocamlup_bin_dir;
   let bin_content = EzFile.read_file Sys.executable_name in
-  let ocamlup_file = ocamlup_bin_dir // "ocamlup" in
-  Globals.display "Creating %s" ocamlup_file;
+  let ocamlup_file = Globals.ocamlup_bin_dir // "ocamlup" in
+  Misc.display "Creating %s" ocamlup_file;
   if Sys.file_exists ocamlup_file then begin
-    Globals.eprintln 2 "Removing %S\n%!" ocamlup_file ;
+    Misc.eprintln 2 "Removing %S\n%!" ocamlup_file ;
     Sys.remove ocamlup_file;
   end;
   EzFile.write_file ocamlup_file bin_content;
   Unix.chmod ocamlup_file 0o755;
   List.iter (fun basename ->
-      let target_file = ocamlup_bin_dir // basename in
+      let target_file = Globals.ocamlup_bin_dir // basename in
       if Sys.file_exists target_file then begin
-        Globals.eprintln 2 "Removing %S\n%!" target_file ;
+        Misc.eprintln 2 "Removing %S\n%!" target_file ;
         Sys.remove target_file;
       end;
-      Globals.eprintln 2 "Creating %S\n%!" target_file ;
+      Misc.eprintln 2 "Creating %S\n%!" target_file ;
       Unix.symlink ocamlup_file target_file;
       Unix.chmod target_file 0o755;
     )
@@ -123,17 +117,17 @@ let action ?repo_url ~src_flag ~editions ~no_modify_path () =
   let path = Sys.getenv "PATH" in
   Unix.putenv "PATH"
     ( Printf.sprintf "%s:%s"
-        ocamlup_bin_dir
+        Globals.ocamlup_bin_dir
         path );
 
-  let env_file = ocamlup_dir // "env" in
-  Globals.eprintln 2 "Creating %s\n%!" env_file;
+  let env_file = Globals.ocamlup_dir // "env" in
+  Misc.eprintln 2 "Creating %s\n%!" env_file;
   EzFile.write_file env_file env_content;
   Unix.chmod env_file 0o755;
 
   if not no_modify_path then begin
     List.iter (fun basename ->
-        let shell_file = home_dir // basename in
+        let shell_file = Globals.home_dir // basename in
         if Sys.file_exists shell_file then
           let has_line = ref false in
           EzFile.iter_lines (fun line ->
@@ -141,7 +135,7 @@ let action ?repo_url ~src_flag ~editions ~no_modify_path () =
             ) shell_file ;
           if not !has_line then begin
             let shell_content = EzFile.read_file shell_file in
-            Globals.display "Modifying %s" shell_file;
+            Misc.display "Modifying %s" shell_file;
             let shell_content = Printf.sprintf "%s\n%s\n" shell_content shell_line in
             EzFile.write_file shell_file shell_content;
             Unix.chmod shell_file 0o755;
@@ -153,34 +147,34 @@ let action ?repo_url ~src_flag ~editions ~no_modify_path () =
       ) shell_config_files
   end;
 
-  Globals.display "Initializing opam repository";
+  Misc.display "Initializing opam repository";
   Call.command ~on_error
     "%s/opam init --bare -n%s"
-    ocamlup_bin_dir
+    Globals.ocamlup_bin_dir
     (match repo_url with
      | None -> ""
      | Some repo_url ->
          Printf.sprintf " %s %s" "default" repo_url
     );
 
-  Globals.display "Initializing opam-bin plugin";
+  Misc.display "Initializing opam-bin plugin";
   Call.command ~on_error
     "%s/opam-bin install"
-    ocamlup_bin_dir
+    Globals.ocamlup_bin_dir
   ;
   Call.command ~on_error
     "%s/opam-bin config --enable-share"
-    ocamlup_bin_dir
+    Globals.ocamlup_bin_dir
   ;
 
-  let share_drom_dir = ocamlup_dir // "share" in
+  let share_drom_dir = Globals.ocamlup_dir // "share" in
   List.iter (fun file ->
       match Drom_lib.Share.read file with
       | None -> assert false
       | Some content ->
           let fullname = share_drom_dir // file in
           let dirname = Filename.dirname fullname in
-          mkdir dirname ;
+          Misc.mkdir dirname ;
           EzFile.write_file fullname content;
     ) Drom_lib.Share.file_list ;
 
@@ -190,10 +184,10 @@ let action ?repo_url ~src_flag ~editions ~no_modify_path () =
     let remote = "ocamlup" in
     let url = Printf.sprintf
         "https://ocamlup.ocaml-lang.org/dist/%s/repo" arch in
-    Globals.display "Adding remote %s to opam" remote;
+    Misc.display "Adding remote %s to opam" remote;
     Call.command ~on_error
       "%s/opam remote add %s --all --set-default %s"
-      ocamlup_bin_dir
+      Globals.ocamlup_bin_dir
       remote
       url ;
   end;
@@ -203,22 +197,22 @@ let action ?repo_url ~src_flag ~editions ~no_modify_path () =
     | [ "none" ] -> []
     | _ -> editions in
   List.iter (fun ocaml_version ->
-      Globals.display "Installing OCaml version %s" ocaml_version ;
+      Misc.display "Installing OCaml version %s" ocaml_version ;
       Call.command ~on_error
         "%s/opam switch create %s"
-        ocamlup_bin_dir
+        Globals.ocamlup_bin_dir
         ocaml_version;
     ) editions ;
 
-  Globals.display "";
-  Globals.display "OCaml Installed in user space!";
-  Globals.display "";
-  Globals.display
+  Misc.display "";
+  Misc.display "OCaml Installed in user space!";
+  Misc.display "";
+  Misc.display
     "To setup your PATH, use the following line (inserted in shell configs):";
-  Globals.display ". $HOME/.ocamlup/env";
-  Globals.display "";
-  Globals.display "Then, use the following line to access an OCaml switch:";
-  Globals.display "eval $(opam env)";
+  Misc.display ". $HOME/.ocamlup/env";
+  Misc.display "";
+  Misc.display "Then, use the following line to access an OCaml switch:";
+  Misc.display "eval $(opam env)";
   ()
 
 open Ezcmd.V2
@@ -232,17 +226,21 @@ let cmd =
   let args = [
 
     [ "default-switch" ], Arg.String (fun s -> editions := s :: !editions),
-    EZCMD.info ~docv:"VERSION" "Install OCaml with version $(VERSION)";
+    EZCMD.info
+      ~env:(EZCMD.env "OCAMLUP_DEFAULT_SWITCH")
+      ~docv:"VERSION" "Install OCaml with version $(VERSION)";
 
     [ "repo-url" ], Arg.String (fun s -> repo_url := Some s),
     EZCMD.info ~docv:"REPO-URL" "Use this repository as default repository" ;
 
     [ "src" ], Arg.Set src_flag,
     EZCMD.info
+      ~env:(EZCMD.env "OCAMLUP_SRC")
       "Do not use a remote binary repository, build everything from sources";
 
     [ "no-modify-path" ], Arg.Set no_modify_path,
     EZCMD.info
+      ~env:(EZCMD.env "OCAMLUP_NO_MODIFY_PATH")
       "Do not modify shell initialization scripts to setup PATH";
 
   ] in

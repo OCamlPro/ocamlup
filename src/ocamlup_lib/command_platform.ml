@@ -10,50 +10,46 @@
 (*                                                                        *)
 (**************************************************************************)
 
-open Ez_file.V1
-open EzFile.OP
+(* open Ez_file.V1 *)
+(* open EzFile.OP *)
 
 let on_error = Misc.on_error_exit
 
-let action ~remove_opam_flag () =
+let ocaml_platform_packages = [
+  "dune" ;
+  "odoc" ;
+  "ocamlformat" ;
+  "dune-release" ;
+  "ocaml-lsp-server" ;
+  "merlin" ;
+  "utop" ;
+]
 
-  Misc.display "Removing .ocamlup directory";
-  Call.command ~on_error "rm -rf %s" Globals.ocamlup_dir ;
+let action () =
 
-  if remove_opam_flag then begin
-    Misc.display "Removing .opam directory";
-    let opam_dir = Globals.home_dir // ".opam" in
-    Call.command ~on_error "rm -rf %s" opam_dir ;
-  end;
-
-  List.iter (fun shell_file ->
-      let shell_file = Globals.home_dir // shell_file in
-      Misc.remove_line_from_file ~line:Command_init.shell_line ~file:shell_file
-    ) Command_init.shell_config_files ;
+  Misc.display "Installing OCaml Platform" ;
+  Call.command ~on_error
+    "%s/opam install -y %s"
+    Globals.ocamlup_bin_dir
+    (String.concat " " ocaml_platform_packages);
 
   ()
 
 open Ezcmd.V2
-open EZCMD.TYPES
+(* open EZCMD.TYPES *)
 
 let cmd =
-  let remove_opam_flag = ref false in
   let args = [
-    [ "opam" ], Arg.Set remove_opam_flag,
-    EZCMD.info
-      "Also remove .opam directory";
   ] in
-  let doc = "Remove OCaml installation in User-Space" in
+  let doc = "Install OCaml Platform packages" in
   let man =  [
     `S "DESCRIPTION";
     `Blocks [
       `P doc ;
     ]
   ] in
-  EZCMD.sub "clean"
-    (fun () ->
-       action ~remove_opam_flag:!remove_opam_flag
-         ())
+  EZCMD.sub "platform"
+    (fun () -> action () )
     ~args
     ~doc
     ~version:Version.version

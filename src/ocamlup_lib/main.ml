@@ -14,9 +14,10 @@ let ocamlup_main argv =
   Printexc.record_backtrace true;
   let commands = [
     Command_init.cmd ;
-    Command_footprint.cmd ;
+    (*    Command_footprint.cmd ; *)
     Command_arch.cmd ;
     Command_clean.cmd ;
+    Command_platform.cmd ;
   ] in
 
   let common_args = [

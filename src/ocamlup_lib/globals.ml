@@ -14,7 +14,6 @@ let verbosity = ref 1
 let verbose n = !verbosity >= n
 
 open Ezcmd.V2
-
 module PROGRAM = struct
   let command = "ocamlup"
   let about = "ocamlup COMMAND COMMAND-OPTIONS"
@@ -28,13 +27,9 @@ end
 module MAIN = EZCMD.MAKE( PROGRAM )
 include PROGRAM
 
-let eprintln v fmt =
-  Printf.kprintf (fun s ->
-      if verbose v then
-        Printf.eprintf "%s\n%!" s
-    ) fmt
+open Ez_file.V1
+open EzFile.OP
 
-let display fmt =
-  Printf.kprintf (fun s ->
-      Printf.printf "%s\n%!" s
-    ) fmt
+let home_dir = Sys.getenv "HOME"
+let ocamlup_dir = home_dir // ".ocamlup"
+let ocamlup_bin_dir = ocamlup_dir // "bin"
