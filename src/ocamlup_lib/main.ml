@@ -15,9 +15,10 @@ let ocamlup_main argv =
   let commands = [
     Command_init.cmd ;
     (*    Command_footprint.cmd ; *)
-    Command_arch.cmd ;
+    Command_upgrade.cmd ;
     Command_clean.cmd ;
     Command_platform.cmd ;
+    Command_arch.cmd ;
   ] in
 
   let common_args = [

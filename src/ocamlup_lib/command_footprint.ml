@@ -18,6 +18,11 @@ open EzFile.OP
 open Ezcmd.V2
 open EZCMD.TYPES
 
+(* This command is disabled by default. It is supposed to be run in an
+   .opam switch to detect shared libraries used by OCaml executables.
+   It might be useful in the future if OCaml depends on shared
+   libraries that are not available on all Linux/Unix systems.  *)
+
 let ldd_filename ~libset file =
   let args = [ "ldd" ; file ] in
   match Call.call_stdout_lines args with

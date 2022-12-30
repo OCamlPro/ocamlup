@@ -65,9 +65,20 @@ share-dirs = ["share"]
 # project-wide fields (depends on project skeleton)
 [fields]
 makefile-trailer = """
+
+WEBSITE_NAME:=ft
+WEBSITE_DIR:=/var/www/ocamlup.ocaml-lang.org/www
+ARCHITECTURE:=x86_64-unknown-linux-gnu
+OPAMBIN_STORE:=$(HOME)/.opam/plugins/opam-bin/store
+-include Makefile.config
 rsync:
-\tscp ocamlup ft:/var/www/ocamlup.ocaml-lang.org/www/dist/x86_64-unknown-linux-gnu/ocamlup-init
-\tscp scripts/ocamlup-shell.sh ft:/var/www/ocamlup.ocaml-lang.org/www/ocamlup-shell.sh
+\tscp ocamlup $(WEBSITE_NAME):$(WEBSITE_DIR)/dist/$(ARCHITECTURE)/ocamlup-init
+\tscp scripts/ocamlup-shell.sh $(WEBSITE_NAME):$(WEBSITE_DIR)/ocamlup-shell.sh
+
+rsync-bin:
+\trsync -auv $(OPAMBIN_STORE)/archives/. ft:/var/www/ocamlup.ocaml-lang.org/www/dist/$(ARCHITECTURE)/archives/.
+\trsync -auv $(OPAMBIN_STORE)repo/packages/. ft:/var/www/ocamlup.ocaml-lang.org/www/dist/$(ARCHITECTURE)/repo/packages/.
+\tssh ft rm -rf '$(WEBSITE_DIR)/dist/$(ARCHITECTURE)/repo/packages/*+bin'
 """
 
 [[package]]

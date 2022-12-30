@@ -1,11 +1,11 @@
 # Keep this file in your GIT repo to help drom track generated files
 # begin version
-version:0.6.1
+version:0.7.0
 # end version
 
 # hash of toml configuration files
 # used for generation of all files
-c5c59eb82f12c2ea65ac1b419243d91a:.
+f811c4ebbe1903945db5279a66a39d97:.
 # end context for .
 
 # begin context for .github/workflows/workflow.yml
@@ -35,7 +35,7 @@ a8d1bcd6f62c6b813b77d3ff8959d8d2:.ocamlformat-ignore
 
 # begin context for CHANGES.md
 # file CHANGES.md
-7e8d753e70ea478eb4b0b9fb638ef0da:CHANGES.md
+d5e1e82d2f0bc90bde06ec8060bb4b49:CHANGES.md
 # end context for CHANGES.md
 
 # begin context for LICENSE.md
@@ -45,7 +45,7 @@ a8d1bcd6f62c6b813b77d3ff8959d8d2:.ocamlformat-ignore
 
 # begin context for Makefile
 # file Makefile
-6bdcf78504d814e834bceff761427378:Makefile
+7b420504d22ce984369dc82093f3bd7d:Makefile
 # end context for Makefile
 
 # begin context for README.md

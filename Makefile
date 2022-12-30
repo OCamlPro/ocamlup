@@ -79,7 +79,18 @@ distclean: clean
 	rm -rf _opam _drom
 	./scripts/after.sh distclean
 
+
+WEBSITE_NAME:=ft
+WEBSITE_DIR:=/var/www/ocamlup.ocaml-lang.org/www
+ARCHITECTURE:=x86_64-unknown-linux-gnu
+OPAMBIN_STORE:=$(HOME)/.opam/plugins/opam-bin/store
+-include Makefile.config
 rsync:
-	scp ocamlup ft:/var/www/ocamlup.ocaml-lang.org/www/dist/x86_64-unknown-linux-gnu/ocamlup-init
-	scp scripts/ocamlup-shell.sh ft:/var/www/ocamlup.ocaml-lang.org/www/ocamlup-shell.sh
+	scp ocamlup $(WEBSITE_NAME):$(WEBSITE_DIR)/dist/$(ARCHITECTURE)/ocamlup-init
+	scp scripts/ocamlup-shell.sh $(WEBSITE_NAME):$(WEBSITE_DIR)/ocamlup-shell.sh
+
+rsync-bin:
+	rsync -auv $(OPAMBIN_STORE)/archives/. ft:/var/www/ocamlup.ocaml-lang.org/www/dist/$(ARCHITECTURE)/archives/.
+	rsync -auv $(OPAMBIN_STORE)repo/packages/. ft:/var/www/ocamlup.ocaml-lang.org/www/dist/$(ARCHITECTURE)/repo/packages/.
+	ssh ft rm -rf '$(WEBSITE_DIR)/dist/$(ARCHITECTURE)/repo/packages/*+bin'
 

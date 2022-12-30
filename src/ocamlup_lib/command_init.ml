@@ -46,8 +46,9 @@ let bin_aliases = [
   "opam-bin" ;
   "drom" ;
   "ocp-indent" ;
+]
 
-  (*
+let bin_wrappers = [
   (* promotions of ocaml tools *)
   "ocaml" ;
   "ocamlc" ;
@@ -66,8 +67,6 @@ let bin_aliases = [
   "ocamlrun" ;
   "ocamlrund" ;
   "ocamlruni" ;
-  "ocamlyacc" ;
-*)
 
   "ocp-index" ;
   "menhir" ;
@@ -87,7 +86,7 @@ case ":${PATH}:" in
 esac
 |}
 
-let action ?repo_url ~src_flag ~editions ~no_modify_path () =
+let action ?repo_url ~src_flag ~editions ~no_modify_path ~no_wrappers () =
 
   let on_error = Misc.on_error_exit in
   Misc.display "Running ocamlup-init!";
@@ -112,7 +111,8 @@ let action ?repo_url ~src_flag ~editions ~no_modify_path () =
       Unix.symlink ocamlup_file target_file;
       Unix.chmod target_file 0o755;
     )
-    bin_aliases ;
+    (bin_aliases @
+     if no_wrappers then [] else bin_wrappers);
 
   let path = Sys.getenv "PATH" in
   Unix.putenv "PATH"
@@ -156,6 +156,11 @@ let action ?repo_url ~src_flag ~editions ~no_modify_path () =
      | Some repo_url ->
          Printf.sprintf " %s %s" "default" repo_url
     );
+
+  (* Disable ocaml-system package *)
+  Call.command ~on_error
+    "%s/opam var --global --cli 2.1 \"sys-ocaml-version=\""
+    Globals.ocamlup_bin_dir;
 
   Misc.display "Initializing opam-bin plugin";
   Call.command ~on_error
@@ -222,6 +227,7 @@ let cmd =
   let repo_url = ref None in
   let src_flag = ref false in
   let no_modify_path = ref false in
+  let no_wrappers = ref false in
   let editions = ref [] in
   let args = [
 
@@ -231,7 +237,9 @@ let cmd =
       ~docv:"VERSION" "Install OCaml with version $(VERSION)";
 
     [ "repo-url" ], Arg.String (fun s -> repo_url := Some s),
-    EZCMD.info ~docv:"REPO-URL" "Use this repository as default repository" ;
+    EZCMD.info
+      ~env:(EZCMD.env "OCAMLUP_REPO_URL")
+      ~docv:"REPO-URL" "Use this repository as default repository" ;
 
     [ "src" ], Arg.Set src_flag,
     EZCMD.info
@@ -242,6 +250,11 @@ let cmd =
     EZCMD.info
       ~env:(EZCMD.env "OCAMLUP_NO_MODIFY_PATH")
       "Do not modify shell initialization scripts to setup PATH";
+
+    [ "no-wrappers" ], Arg.Set no_wrappers,
+    EZCMD.info
+      ~env:(EZCMD.env "OCAMLUP_NO_WRAPPERS")
+      "Do not install wrappers for ocaml/platform commands in PATH";
 
   ] in
   let doc = "Initialize OCaml installation in User-Space" in
@@ -258,6 +271,7 @@ let cmd =
          ~src_flag:!src_flag
          ~editions:!editions
          ~no_modify_path:!no_modify_path
+         ~no_wrappers:!no_wrappers
          ())
     ~args
     ~doc
