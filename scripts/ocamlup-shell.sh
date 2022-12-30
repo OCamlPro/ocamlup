@@ -25,7 +25,7 @@ OCAMLUP_UPDATE_ROOT="${OCAMLUP_UPDATE_ROOT:-https://ocamlup.ocaml-lang.org}"
 #XXX: If you change anything here, please make the same changes in setup_mode.rs
 usage() {
     cat 1>&2 <<EOF
-ocamlup-init 1.25.1 (48d233f65 2022-07-12)
+ocamlup-init
 The installer for ocamlup
 
 USAGE:
@@ -34,15 +34,16 @@ USAGE:
 FLAGS:
     -v, --verbose           Enable verbose output
     -q, --quiet             Disable progress output
-    -y                      Disable confirmation prompt.
         --no-modify-path    Don't configure the PATH environment variable
+        --no-wrappers       Don't create generic wrappers for ocaml commands
+        --src               Don't use binary opam repositories
     -h, --help              Prints help information
-    -V, --version           Prints version information
+    --version               Prints version information
 
 OPTIONS:
         --default-switch <default-switch>     Choose a default switch to install
         --default-switch none                 Do not install any switches
-    -c, --component <components>...           Component name to also install
+        --repo-url URL                        Default Opam repository
 EOF
 }
 
@@ -378,14 +379,8 @@ get_architecture() {
                 else {
                     # 32-bit executable for amd64 = x32
                     if is_host_amd64_elf; then {
-                         echo "This host is running an x32 userland; as it stands, x32 support is poor," 1>&2
-                         echo "and there isn't a native toolchain -- you will have to install" 1>&2
-                         echo "multiarch compatibility with i686 and/or amd64, then select one" 1>&2
-                         echo "by re-running this script with the OCAMLUP_CPUTYPE environment variable" 1>&2
-                         echo "set to i686 or x86_64, respectively." 1>&2
-                         echo 1>&2
-                         echo "You will be able to add an x32 target after installation by running" 1>&2
-                         echo "  ocamlup target add x86_64-unknown-linux-gnux32" 1>&2
+                         echo "This host is running an x32 userland; re-run this script with the" 1>&2
+                         echo "OCAMLUP_CPUTYPE environment variable set to i686 or x86_64, respectively." 1>&2
                          exit 1
                     }; else
                         _cputype=i686
@@ -406,20 +401,7 @@ get_architecture() {
                     _ostype="${_ostype}eabihf"
                 fi
                 ;;
-            riscv64gc)
-                err "riscv64 with 32-bit userland unsupported"
-                ;;
         esac
-    fi
-
-    # Detect armv7 but without the CPU features Rust needs in that build,
-    # and fall back to arm.
-    # See https://github.com/rust-lang/ocamlup.rs/issues/587.
-    if [ "$_ostype" = "unknown-linux-gnueabihf" ] && [ "$_cputype" = armv7 ]; then
-        if ensure grep '^Features' /proc/cpuinfo | grep -q -v neon; then
-            # At least one processor does not have NEON.
-            _cputype=arm
-        fi
     fi
 
     _arch="${_cputype}-${_ostype}"

@@ -10,281 +10,280 @@
 (*                                                                        *)
 (**************************************************************************)
 
+let err fmt =
+  Printf.kprintf (fun s -> Printf.eprintf "Error: %s\n%!" s; exit 2) fmt
+
+let check_proc() =
+  (*
+     Check for /proc by looking for the /proc/self/exe link
+     This is only run on Linux
+*)
+    if not ( Sys.file_exists "/proc/self/exe" ) then
+      err "fatal: Unable to find /proc/self/exe.  Is /proc mounted?  Installation cannot proceed without /proc."
+
+let get_proc_self_exe n =
+  let current_exe_head = Bytes.create n in
+  let ic = open_in_bin "/proc/self/exe" in
+  really_input ic current_exe_head 0 n ;
+  close_in ic;
+  Bytes.to_string current_exe_head
+
+let get_bitness() =
+  (*
+     Architecture detection without dependencies beyond coreutils.
+     ELF files start out "\x7fELF", and the following byte is
+       0x01 for 32-bit and
+       0x02 for 64-bit.
+     The printf builtin on some shells like dash only supports octal
+     escape sequences, so we use those.
+*)
+  let current_exe_head = get_proc_self_exe 5 in
+  if current_exe_head = "\x7fELF\001" then 32
+  else
+  if current_exe_head = "\x7fELF\002" then 64
+  else
+    err "unknown platform bitness %S" current_exe_head
+
+let is_host_amd64_elf () =
 (*
+     ELF e_machine detection without dependencies beyond coreutils.
+     Two-byte field at offset 0x12 indicates the CPU,
+     but we're interested in it being 0x3E to indicate amd64, or not that.
+*)
+  let current_exe_machine = get_proc_self_exe 19 in
+  current_exe_machine.[18] = '\x3e'
 
-check_proc() {
-    # Check for /proc by looking for the /proc/self/exe link
-    # This is only run on Linux
-    if ! test -L /proc/self/exe ; then
-        err "fatal: Unable to find /proc/self/exe.  Is /proc mounted?  Installation cannot proceed without /proc."
-    fi
-}
+let get_endianness ~cputype ~eb ~el =
+  (*     detect endianness without od/hexdump, like get_bitness() does. *)
 
-get_bitness() {
-    need_cmd head
-    # Architecture detection without dependencies beyond coreutils.
-    # ELF files start out "\x7fELF", and the following byte is
-    #   0x01 for 32-bit and
-    #   0x02 for 64-bit.
-    # The printf builtin on some shells like dash only supports octal
-    # escape sequences, so we use those.
-    local _current_exe_head
-    _current_exe_head=$(head -c 5 /proc/self/exe )
-    if [ "$_current_exe_head" = "$(printf '\177ELF\001')" ]; then
-        echo 32
-    elif [ "$_current_exe_head" = "$(printf '\177ELF\002')" ]; then
-        echo 64
-    else
-        err "unknown platform bitness"
-    fi
-}
+  let current_exe_endianness = get_proc_self_exe 6 in
+  let current_exe_endianness = current_exe_endianness.[5] in
 
-is_host_amd64_elf() {
-    need_cmd head
-    need_cmd tail
-    # ELF e_machine detection without dependencies beyond coreutils.
-    # Two-byte field at offset 0x12 indicates the CPU,
-    # but we're interested in it being 0x3E to indicate amd64, or not that.
-    local _current_exe_machine
-    _current_exe_machine=$(head -c 19 /proc/self/exe | tail -c 1)
-    [ "$_current_exe_machine" = "$(printf '\076')" ]
-}
+  if current_exe_endianness = '\001' then
+    cputype ^ el
+  else
+  if current_exe_endianness = '\002' then
+    cputype ^ eb
+  else
+    err "unknown platform endianness"
 
-get_endianness() {
-    local cputype=$1
-    local suffix_eb=$2
-    local suffix_el=$3
+let uname list =
+  Call.call_stdout_string ("uname" :: list) |> String.trim
 
-    # detect endianness without od/hexdump, like get_bitness() does.
-    need_cmd head
-    need_cmd tail
+let call_match ?stderr cmd ~re =
+  let lines = Call.call_stdout_lines ?stderr cmd in
+  let re = match re with
+    | `String re -> Str.regexp_string re
+    | `STRING re -> Str.regexp_string_case_fold re
+    | `Regexp re -> Str.regexp re
+    | `REGEXP re -> Str.regexp_case_fold re
+  in
+  let rec iter lines =
+    match lines with
+    | [] -> false
+    | line :: tail ->
+        match Str.search_forward re line 0 with
+        | exception Not_found -> iter tail
+        | _ -> true
+  in
+  iter lines
 
-    local _current_exe_endianness
-    _current_exe_endianness="$(head -c 6 /proc/self/exe | tail -c 1)"
-    if [ "$_current_exe_endianness" = "$(printf '\001')" ]; then
-        echo "${cputype}${suffix_el}"
-    elif [ "$_current_exe_endianness" = "$(printf '\002')" ]; then
-        echo "${cputype}${suffix_eb}"
-    else
-        err "unknown platform endianness"
-    fi
-}
+let get () =
+  let ostype = uname  [ "-s" ] in
+  let cputype = uname [ "-m" ] in
 
-get_architecture() {
-    local _ostype _cputype _bitness _arch _clibtype
-    _ostype="$(uname -s)"
-    _cputype="$(uname -m)"
-    _clibtype="gnu"
+  let bitness = ref 0 in
+  let ostype = ref ostype in
+  let cputype = ref cputype in
+  let clibtype = ref "gnu" in
 
-    if [ "$_ostype" = Linux ]; then
-        if [ "$(uname -o)" = Android ]; then
-            _ostype=Android
-        fi
-        if ldd --version 2>&1 | grep -q 'musl'; then
-            _clibtype="musl"
-        fi
-    fi
+  if !ostype = "Linux" then begin
+    let s = uname [ "-o" ] in
 
-    if [ "$_ostype" = Darwin ] && [ "$_cputype" = i386 ]; then
-        # Darwin `uname -m` lies
-        if sysctl hw.optional.x86_64 | grep -q ': 1'; then
-            _cputype=x86_64
-        fi
-    fi
+    if s = "Android" then
+      ostype := "Android" ;
 
-    if [ "$_ostype" = SunOS ]; then
-        # Both Solaris and illumos presently announce as "SunOS" in "uname -s"
-        # so use "uname -o" to disambiguate.  We use the full path to the
-        # system uname in case the user has coreutils uname first in PATH,
-        # which has historically sometimes printed the wrong value here.
-        if [ "$(/usr/bin/uname -o)" = illumos ]; then
-            _ostype=illumos
-        fi
+    if call_match ~stderr:true [ "ldd" ; "--version" ] ~re:(`STRING "musl") then
+      clibtype := "musl" ;
 
-        # illumos systems have multi-arch userlands, and "uname -m" reports the
-        # machine hardware name; e.g., "i86pc" on both 32- and 64-bit x86
-        # systems.  Check for the native (widest) instruction set on the
-        # running kernel:
-        if [ "$_cputype" = i86pc ]; then
-            _cputype="$(isainfo -n)"
-        fi
-    fi
+  end;
 
-    case "$_ostype" in
+  if !ostype = "Darwin" && !cputype = "i386" then begin
+    (* Darwin `uname -m` lies *)
+    if call_match [ "sysctl" ; "hw.optional.x86_64" ] ~re:(`STRING ": 1") then
+      cputype := "x86_64";
+  end;
 
-        Android)
-            _ostype=linux-android
-            ;;
+  if !ostype = "SunOS" then begin
+    (*
+         Both Solaris and illumos presently announce as "SunOS" in "uname -s"
+         so use "uname -o" to disambiguate.  We use the full path to the
+         system uname in case the user has coreutils uname end ;rst in PATH,
+         which has historically sometimes printed the wrong value here.
+*)
+    if Call.call_stdout_string [ "/usr/bin/uname" ; "-o" ]
+       = "illumos" then begin
+      ostype := "illumos"
+    end ;
 
-        Linux)
-            check_proc
-            _ostype=unknown-linux-$_clibtype
-            _bitness=$(get_bitness)
-            ;;
+    (*
+         illumos systems have multi-arch userlands, and "uname -m" reports the
+         machine hardware name; e.g., "i86pc" on both 32- and 64-bit x86
+         systems.  Check for the native (widest) instruction set on the
+         running kernel:
+*)
+    if !cputype = "i86pc" then begin
+      cputype := Call.call_stdout_string [ "isainfo" ; "-n" ]
+    end ;
+  end ;
 
-        FreeBSD)
-            _ostype=unknown-freebsd
-            ;;
+  begin
+    match String.lowercase_ascii !ostype with
 
-        NetBSD)
-            _ostype=unknown-netbsd
-            ;;
+    | "android" ->
+        ostype := "linux-android"
+    | "linux" ->
+        check_proc ();
+        ostype := "unknown-linux-" ^ !clibtype ;
+        bitness := get_bitness ()
+    | "freebsd" ->
+        ostype := "unknown-freebsd"
+    | "netbsd" ->
+        ostype := "unknown-netbsd"
+    | "dragonfly" ->
+        ostype := "unknown-dragonfly"
+    | "darwin" ->
+        ostype := "apple-darwin"
+    | "illumos" ->
+        ostype := "unknown-illumos"
 
-        DragonFly)
-            _ostype=unknown-dragonfly
-            ;;
+    | "windows_nt" | "mingw" | "msys" | "cygwin" ->
+        ostype := "pc-windows-gnu"
+    | os ->
+        match
+          if String.length os > 4 then
+            String.sub os 0 4
+          else
+            os
+        with
+        | "ming"
+        | "msys"
+        | "cygw" ->
+            ostype := "pc-windows-gnu"
+        | _ ->
+            err "unrecognized OS type: %s" !ostype
+  end ;
 
-        Darwin)
-            _ostype=apple-darwin
-            ;;
+  begin
+    match String.lowercase_ascii !cputype with
 
-        illumos)
-            _ostype=unknown-illumos
-            ;;
+    | "i386" | "i486" | "i686" | "i786" | "x86" ->
+        cputype := "i686"
 
-        MINGW* | MSYS* | CYGWIN* | Windows_NT)
-            _ostype=pc-windows-gnu
-            ;;
+    | "xscale" | "arm" ->
+        cputype := "arm" ;
+        if !ostype = "linux-android" then begin
+          ostype := "linux-androideabi"
+        end ;
 
-        * )
-            err "unrecognized OS type: $_ostype"
-            ;;
+    | "armv6l" ->
+        cputype := "arm" ;
+        if !ostype = "linux-android" then begin
+          ostype := "linux-androideabi"
+        end else begin
+          ostype := !ostype ^ "eabihf"
+        end ;
 
-    esac
+    | "armv7l" | "armv8l" ->
+        cputype := "armv7" ;
+        if !ostype = "linux-android" then begin
+          ostype := "linux-androideabi"
+        end else begin
+          ostype := !ostype ^ "eabihf"
+        end ;
 
-    case "$_cputype" in
+    | "aarch64" | "arm64" ->
+        cputype := "aarch64"
 
-        i386 | i486 | i686 | i786 | x86)
-            _cputype=i686
-            ;;
+    | "x86_64" | "x86-64" | "x64" | "amd64" ->
+        cputype := "x86_64"
 
-        xscale | arm)
-            _cputype=arm
-            if [ "$_ostype" = "linux-android" ]; then
-                _ostype=linux-androideabi
-            fi
-            ;;
+    | "mips" ->
+        cputype := get_endianness ~cputype:"mips" ~eb:"" ~el:"el";
 
-        armv6l)
-            _cputype=arm
-            if [ "$_ostype" = "linux-android" ]; then
-                _ostype=linux-androideabi
-            else
-                _ostype="${_ostype}eabihf"
-            fi
-            ;;
+    | "mips64" ->
+        if !bitness = 64 then begin
+          (*  only n64 ABI is supported for now *)
+          ostype := !ostype ^ "abi64" ;
+          cputype := get_endianness ~cputype:"mips64" ~eb:"" ~el:"el" ;
+        end ;
 
-        armv7l | armv8l)
-            _cputype=armv7
-            if [ "$_ostype" = "linux-android" ]; then
-                _ostype=linux-androideabi
-            else
-                _ostype="${_ostype}eabihf"
-            fi
-            ;;
+    | "ppc" ->
+        cputype := "powerpc"
 
-        aarch64 | arm64)
-            _cputype=aarch64
-            ;;
+    | "ppc64" ->
+        cputype := "powerpc64"
 
-        x86_64 | x86-64 | x64 | amd64)
-            _cputype=x86_64
-            ;;
+    | "ppc64le" ->
+        cputype := "powerpc64le"
 
-        mips)
-            _cputype=$(get_endianness mips '' el)
-            ;;
+    | "s390x" ->
+        cputype := "s390x"
 
-        mips64)
-            if [ "$_bitness" -eq 64 ]; then
-                # only n64 ABI is supported for now
-                _ostype="${_ostype}abi64"
-                _cputype=$(get_endianness mips64 '' el)
-            fi
-            ;;
+    | "riscv64" ->
+        cputype := "riscv64gc"
 
-        ppc)
-            _cputype=powerpc
-            ;;
+    | _ ->
+        err "unknown CPU type: %s" !cputype
 
-        ppc64)
-            _cputype=powerpc64
-            ;;
+  end ;
 
-        ppc64le)
-            _cputype=powerpc64le
-            ;;
-
-        s390x)
-            _cputype=s390x
-            ;;
-        riscv64)
-            _cputype=riscv64gc
-            ;;
-        * )
-            err "unknown CPU type: $_cputype"
-
-    esac
-
-    # Detect 64-bit linux with 32-bit userland
-    if [ "${_ostype}" = unknown-linux-gnu ] && [ "${_bitness}" -eq 32 ]; then
-        case $_cputype in
-            x86_64)
-                if [ -n "${OCAMLUP_CPUTYPE:-}" ]; then
-                    _cputype="$OCAMLUP_CPUTYPE"
-                else {
-                    # 32-bit executable for amd64 = x32
-                    if is_host_amd64_elf; then {
-                         echo "This host is running an x32 userland; as it stands, x32 support is poor," 1>&2
-                         echo "and there isn't a native toolchain -- you will have to install" 1>&2
-                         echo "multiarch compatibility with i686 and/or amd64, then select one" 1>&2
-                         echo "by re-running this script with the OCAMLUP_CPUTYPE environment variable" 1>&2
-                         echo "set to i686 or x86_64, respectively." 1>&2
-                         echo 1>&2
-                         echo "You will be able to add an x32 target after installation by running" 1>&2
-                         echo "  ocamlup target add x86_64-unknown-linux-gnux32" 1>&2
-                         exit 1
-                    }; else
-                        _cputype=i686
-                    fi
-                }; fi
-                ;;
-            mips64)
-                _cputype=$(get_endianness mips '' el)
-                ;;
-            powerpc64)
-                _cputype=powerpc
-                ;;
-            aarch64)
-                _cputype=armv7
-                if [ "$_ostype" = "linux-android" ]; then
-                    _ostype=linux-androideabi
-                else
-                    _ostype="${_ostype}eabihf"
-                fi
-                ;;
-            riscv64gc)
-                err "riscv64 with 32-bit userland unsupported"
-                ;;
-        esac
-    fi
-
-    # Detect armv7 but without the CPU features Rust needs in that build,
-    # and fall back to arm.
-    # See https://github.com/rust-lang/ocamlup.rs/issues/587.
-    if [ "$_ostype" = "unknown-linux-gnueabihf" ] && [ "$_cputype" = armv7 ]; then
-        if ensure grep '^Features' /proc/cpuinfo | grep -q -v neon; then
-            # At least one processor does not have NEON.
-            _cputype=arm
-        fi
-    fi
-
-    _arch="${_cputype}-${_ostype}"
-
-    RETVAL="$_arch"
-}
-
-
+(*
+     Detect 64-bit linux with 32-bit userland
 *)
 
-let get () = "x86_64-unknown-linux-gnu"
+  if !ostype = "unknown-linux-gnu"  &&  !bitness = 32 then begin
+    match !cputype with
+    | "x86_64" ->
+
+        begin
+          match Sys.getenv "OCAMLUP_CPUTYPE" with
+          | s -> cputype := s
+          | exception Not_found ->
+              (*
+                32-bit executable for amd64 = x32
+               *)
+              if is_host_amd64_elf () then begin
+
+                err
+                  "This host is running an x32 userland on a 64-bit processor. Re-run the script with the OCAMLUP_CPUTYPE environment variable set to i686 or x86_64, respectively."
+
+              end else begin
+                cputype := "i686"
+              end ;
+        end ;
+
+    | "mips64" ->
+        cputype := get_endianness ~cputype:"mips" ~eb:"" ~el:"el"
+
+    | "powerpc64" ->
+        cputype := "powerpc"
+
+    | "aarch64" ->
+        cputype := "armv7" ;
+        if !ostype = "linux-android" then begin
+          ostype := "linux-androideabi"
+        end else begin
+          ostype := !ostype ^ "eabihf"
+        end ;
+
+    | _ -> ()
+  end ;
+
+  Printf.eprintf "ostype: %s\n%!" !ostype ;
+  Printf.eprintf "cputype: %s\n%!" !cputype ;
+  Printf.eprintf "clibtype: %s\n%!" !clibtype ;
+  Printf.eprintf "bitness: %d\n%!" !bitness ;
+
+  Printf.sprintf "%s-%s"
+    !cputype !ostype

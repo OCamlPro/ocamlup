@@ -28,12 +28,15 @@ let command ?on_error fmt =
 let tmpfile () =
   Filename.temp_file "tmpfile" ".tmp"
 
-let call ?(stdout = Unix.stdout) args =
+let call
+    ?(stdout = Unix.stdout)
+    ?(stderr = Unix.stderr)
+    args =
   if verbose 2 then
     Printf.eprintf "Calling %s\n%!" (String.concat " " args);
   let targs = Array.of_list args in
   let pid = Unix.create_process targs.(0) targs
-      Unix.stdin stdout Unix.stderr in
+      Unix.stdin stdout stderr in
   let rec iter () =
     match Unix.waitpid [] pid with
     | exception Unix.Unix_error (EINTR, _, _) -> iter ()
@@ -50,13 +53,17 @@ let call ?(stdout = Unix.stdout) args =
   in
   iter ()
 
-let call_stdout_file ?file args =
+let call_stdout_file ?(stderr=false) ?file args =
   let tmpfile = match file with
     | None -> tmpfile ()
     | Some file -> file in
   let stdout = Unix.openfile tmpfile
       [ Unix.O_CREAT ; Unix.O_WRONLY ; Unix.O_TRUNC ] 0o644 in
-  match call ~stdout args with
+  let stderr = if stderr then
+      Some stdout
+    else None
+  in
+  match call ~stdout ?stderr args with
   | () ->
       Unix.close stdout;
       tmpfile
@@ -66,8 +73,16 @@ let call_stdout_file ?file args =
         Printf.eprintf "Stdout after error:\n%s\n" stdout;
       raise exn
 
-let call_stdout_lines args =
-  let file = call_stdout_file args in
+let call_stdout_string ?stderr args =
+  let file = call_stdout_file ?stderr args in
+  let stdout = EzFile.read_file file in
+  Sys.remove file;
+  if Globals.verbose 2 then
+    Printf.eprintf "stdout:\n%s\n%!" stdout ;
+  stdout
+
+let call_stdout_lines ?stderr args =
+  let file = call_stdout_file ?stderr args in
   let stdout = EzFile.read_lines file in
   Sys.remove file;
   let lines = Array.to_list stdout in
