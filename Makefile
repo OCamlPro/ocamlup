@@ -86,7 +86,9 @@ ARCHITECTURE:=x86_64-unknown-linux-gnu
 OPAMBIN_STORE:=$(HOME)/.opam/plugins/opam-bin/store
 -include Makefile.config
 rsync:
+	md5sum ocamlup | awk '{ print $1 }' > ocamlup.hash
 	scp ocamlup $(WEBSITE_NAME):$(WEBSITE_DIR)/dist/$(ARCHITECTURE)/ocamlup-init
+	scp ocamlup.hash $(WEBSITE_NAME):$(WEBSITE_DIR)/dist/$(ARCHITECTURE)/
 	scp scripts/ocamlup-shell.sh $(WEBSITE_NAME):$(WEBSITE_DIR)/ocamlup-shell.sh
 
 rsync-bin:

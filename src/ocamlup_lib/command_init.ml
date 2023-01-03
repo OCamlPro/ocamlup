@@ -86,6 +86,18 @@ case ":${PATH}:" in
 esac
 |}
 
+let expand_share share_drom_dir =
+  List.iter (fun file ->
+      match Drom_lib.Share.read file with
+      | None -> assert false
+      | Some content ->
+          let fullname = share_drom_dir // file in
+          let dirname = Filename.dirname fullname in
+          Misc.mkdir dirname ;
+          EzFile.write_file fullname content;
+    ) Drom_lib.Share.file_list ;
+  ()
+
 let action ?repo_url ~src_flag ~editions ~no_modify_path ~no_wrappers () =
 
   let on_error = Misc.on_error_exit in
@@ -173,16 +185,7 @@ let action ?repo_url ~src_flag ~editions ~no_modify_path ~no_wrappers () =
   ;
 
   let share_drom_dir = Globals.ocamlup_dir // "share" in
-  List.iter (fun file ->
-      match Drom_lib.Share.read file with
-      | None -> assert false
-      | Some content ->
-          let fullname = share_drom_dir // file in
-          let dirname = Filename.dirname fullname in
-          Misc.mkdir dirname ;
-          EzFile.write_file fullname content;
-    ) Drom_lib.Share.file_list ;
-
+  expand_share share_drom_dir ;
 
   if not src_flag then begin
     let arch = Architecture.get () in
