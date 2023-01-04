@@ -10,12 +10,17 @@ SPHINX_TARGET:=_drom/docs/sphinx
 ODOC_TARGET:=_drom/docs/doc/.
 
 
+# Use these non-generated files to include more rules here (and
+# Makefile.trailer at the end)
+-include Makefile.header
+-include Makefile.config
+
 all: build
 
 build:
 	./scripts/before.sh build
 	opam exec -- dune build @install
-	./scripts/copy-bin.sh ocamlup ocamlup_lib
+	./scripts/copy-bin.sh ocamlup ocamlup_lib opam_bin_lib
 	./scripts/after.sh build
 
 build-deps:
@@ -79,16 +84,14 @@ distclean: clean
 	rm -rf _opam _drom
 	./scripts/after.sh distclean
 
-
+-include Makefile.trailer
 WEBSITE_NAME:=ft
 WEBSITE_DIR:=/var/www/ocamlup.ocaml-lang.org/www
 ARCHITECTURE:=x86_64-unknown-linux-gnu
 OPAMBIN_STORE:=$(HOME)/.opam/plugins/opam-bin/store
 -include Makefile.config
 rsync:
-	md5sum ocamlup | awk '{ print $1 }' > ocamlup.hash
 	scp ocamlup $(WEBSITE_NAME):$(WEBSITE_DIR)/dist/$(ARCHITECTURE)/ocamlup-init
-	scp ocamlup.hash $(WEBSITE_NAME):$(WEBSITE_DIR)/dist/$(ARCHITECTURE)/
 	scp scripts/ocamlup-shell.sh $(WEBSITE_NAME):$(WEBSITE_DIR)/ocamlup-shell.sh
 
 rsync-bin:

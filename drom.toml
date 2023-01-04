@@ -8,8 +8,9 @@ copyright = "OCamlPro SAS"
 edition = "4.10.0"
 github-organization = "ocamlpro"
 license = "LGPL2"
-min-edition = "4.07.0"
+min-edition = "4.10.0"
 name = "ocamlup"
+skeleton = "program"
 synopsis = "The ocamlup project"
 version = "0.1.0"
 
@@ -65,7 +66,6 @@ share-dirs = ["share"]
 # project-wide fields (depends on project skeleton)
 [fields]
 makefile-trailer = """
-
 WEBSITE_NAME:=ft
 WEBSITE_DIR:=/var/www/ocamlup.ocaml-lang.org/www
 ARCHITECTURE:=x86_64-unknown-linux-gnu
@@ -80,12 +80,28 @@ rsync-bin:
 \trsync -auv $(OPAMBIN_STORE)repo/packages/. ft:/var/www/ocamlup.ocaml-lang.org/www/dist/$(ARCHITECTURE)/repo/packages/.
 \tssh ft rm -rf '$(WEBSITE_DIR)/dist/$(ARCHITECTURE)/repo/packages/*+bin'
 """
+dot-gitignore-trailer = """
+/drom
+/ocamlup.hash
+"""
 
 [[package]]
 dir = "src/ocamlup"
-# edit 'src/ocamlup-init/package.toml' for package-specific options
+# edit 'src/ocamlup/package.toml' for package-specific options
 
 [[package]]
 dir = "src/ocamlup_lib"
+# edit 'src/ocamlup_lib/package.toml' for package-specific options
+
+[[package]]
+dir = "src/opam_bin_lib"
+# edit 'src/ocamlup_lib/package.toml' for package-specific options
+
+[[package]]
+dir = "src/drom_lib"
+# edit 'src/ocamlup_lib/package.toml' for package-specific options
+
+[[package]]
+dir = "src/drom_toml"
 # edit 'src/ocamlup_lib/package.toml' for package-specific options
 

@@ -19,7 +19,7 @@
 
 (executable
  (name test2)
- (libraries ocamlup_lib) ; add your own library here
+ (libraries ocamlup_lib opam_bin_lib) ; add your own library here
  )
 
 (alias
