@@ -98,7 +98,11 @@ let expand_share share_drom_dir =
     ) Drom_lib.Share.file_list ;
   ()
 
-let action ?repo_url ~src_flag ~editions ~no_modify_path ~no_wrappers () =
+let action ?repo_url ~src_flag ~editions
+    ~no_modify_path
+    ~no_wrappers
+    ~no_sandboxing
+    () =
 
   let on_error = Misc.on_error_exit in
   Misc.display "Running ocamlup-init!";
@@ -161,12 +165,13 @@ let action ?repo_url ~src_flag ~editions ~no_modify_path ~no_wrappers () =
 
   Misc.display "Initializing opam repository";
   Call.command ~on_error
-    "%s/opam init --bare -n%s"
+    "%s/opam init --bare%s -n%s"
     Globals.ocamlup_bin_dir
+    (if no_sandboxing then " --disable-sandboxing" else "")
     (match repo_url with
      | None -> ""
      | Some repo_url ->
-         Printf.sprintf " %s %s" "default" repo_url
+         Printf.sprintf " %s '%s'" "default" repo_url
     );
 
   (* Disable ocaml-system package *)
@@ -231,6 +236,7 @@ let cmd =
   let src_flag = ref false in
   let no_modify_path = ref false in
   let no_wrappers = ref false in
+  let no_sandboxing = ref false in
   let editions = ref [] in
   let args = [
 
@@ -259,6 +265,11 @@ let cmd =
       ~env:(EZCMD.env "OCAMLUP_NO_WRAPPERS")
       "Do not install wrappers for ocaml/platform commands in PATH";
 
+    [ "no-sandboxing" ], Arg.Set no_sandboxing,
+    EZCMD.info
+      ~env:(EZCMD.env "OCAMLUP_NO_SANDBOXING")
+      "Disable sandboxing in opam";
+
   ] in
   let doc = "Initialize OCaml installation in User-Space" in
   let man =  [
@@ -275,6 +286,7 @@ let cmd =
          ~editions:!editions
          ~no_modify_path:!no_modify_path
          ~no_wrappers:!no_wrappers
+         ~no_sandboxing:!no_sandboxing
          ())
     ~args
     ~doc

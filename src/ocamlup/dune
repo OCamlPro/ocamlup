@@ -5,12 +5,16 @@
   (package ocamlup)
   (libraries ocamlup_lib )
   
-  
+  (flags (:standard (:include linking.sexp)))
   )
 
 
 (documentation
   (package ocamlup))
 
+(rule
+  (targets linking.sexp)
+  (action  (with-stdout-to %{targets}
+    (run ./linking_flags.sh linking.sexp %{env:LINKING_MODE=dynamic} %{ocaml-config:system}  mccs_stubs mccs_glpk_stubs stdc++))))
 
 

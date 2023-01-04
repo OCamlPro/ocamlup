@@ -7,5 +7,8 @@ _build
 /_opam
 /_build
 .drom.config
+# Add dot-gitignore-trailer = "..." in [fields] of drom.toml
+/drom
+/ocamlup.hash
 
 

@@ -1,21 +1,21 @@
 # Keep this file in your GIT repo to help drom track generated files
 # begin version
-version:0.7.0
+version:0.8.0
 # end version
 
 # hash of toml configuration files
 # used for generation of all files
-f811c4ebbe1903945db5279a66a39d97:.
+cac7acd69786441a02067dd30fbf6d8d:.
 # end context for .
 
 # begin context for .github/workflows/workflow.yml
 # file .github/workflows/workflow.yml
-e76885d3c428c9559204d689dd00fa1f:.github/workflows/workflow.yml
+de8b36c9a1740a7f4c8dac22781d4b09:.github/workflows/workflow.yml
 # end context for .github/workflows/workflow.yml
 
 # begin context for .gitignore
 # file .gitignore
-cfef451696b31ffbfb27c044e3b6f404:.gitignore
+6356283dc3af280cdca20b8ceef9700a:.gitignore
 # end context for .gitignore
 
 # begin context for .ocamlformat
@@ -25,7 +25,7 @@ cfef451696b31ffbfb27c044e3b6f404:.gitignore
 
 # begin context for .ocamlformat-ignore
 # file .ocamlformat-ignore
-a8d1bcd6f62c6b813b77d3ff8959d8d2:.ocamlformat-ignore
+c8f70450e7d78c0387644864ffe8cbd5:.ocamlformat-ignore
 # end context for .ocamlformat-ignore
 
 # begin context for .ocp-indent
@@ -35,17 +35,17 @@ a8d1bcd6f62c6b813b77d3ff8959d8d2:.ocamlformat-ignore
 
 # begin context for CHANGES.md
 # file CHANGES.md
-d5e1e82d2f0bc90bde06ec8060bb4b49:CHANGES.md
+52579e40965caf233af339a0eaabc5e1:CHANGES.md
 # end context for CHANGES.md
 
 # begin context for LICENSE.md
 # file LICENSE.md
-3e8c72433d2b8531f0e9716ab0e5fc8a:LICENSE.md
+e31b19b601ab25353ef16d67127735f1:LICENSE.md
 # end context for LICENSE.md
 
 # begin context for Makefile
 # file Makefile
-7b420504d22ce984369dc82093f3bd7d:Makefile
+7ea50ad0183e34208227950ea4175479:Makefile
 # end context for Makefile
 
 # begin context for README.md
@@ -85,7 +85,7 @@ c8281f46ba9a11d0b61bc8ef67eaa357:docs/style.css
 
 # begin context for drom.toml
 # file drom.toml
-57221d02c9ab58e1cf7bf6429a11edf1:drom.toml
+a829837b6f838cdda13b02925eb8dcd8:drom.toml
 # end context for drom.toml
 
 # begin context for dune
@@ -95,32 +95,32 @@ c8281f46ba9a11d0b61bc8ef67eaa357:docs/style.css
 
 # begin context for dune-project
 # file dune-project
-3254b4640c1f6f1b8016f7647453db52:dune-project
+6fcef4808377912f84bcf74a31f5fa2b:dune-project
 # end context for dune-project
-
-# begin context for opam/ocamlup-init.opam
-# file opam/ocamlup-init.opam
-db64a6a8cf072662106b3b87d401bc2f:opam/ocamlup-init.opam
-# end context for opam/ocamlup-init.opam
 
 # begin context for opam/ocamlup.opam
 # file opam/ocamlup.opam
-7748f654de3387b999633330d65c58e6:opam/ocamlup.opam
+4369bd263e81ae2659bbb5ef11f97771:opam/ocamlup.opam
 # end context for opam/ocamlup.opam
 
 # begin context for opam/ocamlup_lib.opam
 # file opam/ocamlup_lib.opam
-b7e1ac3054c82e6caddde6a143aea7fa:opam/ocamlup_lib.opam
+3a00f9eee5038c46abdbc816c75b1715:opam/ocamlup_lib.opam
 # end context for opam/ocamlup_lib.opam
+
+# begin context for opam/opam_bin_lib.opam
+# file opam/opam_bin_lib.opam
+fa8a191bd6d7e8c2c69f6f9f713e6c13:opam/opam_bin_lib.opam
+# end context for opam/opam_bin_lib.opam
 
 # begin context for scripts/after.sh
 # file scripts/after.sh
-1112fbe7067fce342365a25613b5659d:scripts/after.sh
+62c6489217feef26dac343e709b89c1a:scripts/after.sh
 # end context for scripts/after.sh
 
 # begin context for scripts/before.sh
 # file scripts/before.sh
-ae050b3099ac0b43d7c7f4295f6b2319:scripts/before.sh
+371e627833d9ac7ae2f906b5ec97aae2:scripts/before.sh
 # end context for scripts/before.sh
 
 # begin context for scripts/copy-bin.sh
@@ -150,17 +150,17 @@ cad880d9ca0cf084d8707e2a5ad0583a:sphinx/index.rst
 
 # begin context for sphinx/install.rst
 # file sphinx/install.rst
-57def6cc5324bb8ec168ce5cc419ad76:sphinx/install.rst
+ecf7947aa6d23a0a248b479da7892fe9:sphinx/install.rst
 # end context for sphinx/install.rst
 
 # begin context for sphinx/license.rst
 # file sphinx/license.rst
-abc6ae223dbcd2a710665e948f370518:sphinx/license.rst
+7f09d28eb87ab9f2650899f85835e74a:sphinx/license.rst
 # end context for sphinx/license.rst
 
 # begin context for src/ocamlup/dune
 # file src/ocamlup/dune
-f96086dbe5040daa9839f097ab9c8597:src/ocamlup/dune
+63cd30c394e62cd765932737f88165f8:src/ocamlup/dune
 # end context for src/ocamlup/dune
 
 # begin context for src/ocamlup/index.mld
@@ -172,6 +172,11 @@ f96086dbe5040daa9839f097ab9c8597:src/ocamlup/dune
 # file src/ocamlup/main.ml
 2003b38aafc967f48718f7d0675917f6:src/ocamlup/main.ml
 # end context for src/ocamlup/main.ml
+
+# begin context for src/ocamlup/package.toml
+# file src/ocamlup/package.toml
+5bebbe9e225556e719848003b589ab58:src/ocamlup/package.toml
+# end context for src/ocamlup/package.toml
 
 # begin context for src/ocamlup_lib/dune
 # file src/ocamlup_lib/dune
@@ -190,7 +195,7 @@ e9acc884df7436bfe198a1ab353fb991:src/ocamlup_lib/main.ml
 
 # begin context for src/ocamlup_lib/package.toml
 # file src/ocamlup_lib/package.toml
-e3fc328078e4e9b789a49a3bf1a0ac2a:src/ocamlup_lib/package.toml
+65effe1150317a7001f53f891f0613fa:src/ocamlup_lib/package.toml
 # end context for src/ocamlup_lib/package.toml
 
 # begin context for src/ocamlup_lib/version.mlt
@@ -198,9 +203,24 @@ e3fc328078e4e9b789a49a3bf1a0ac2a:src/ocamlup_lib/package.toml
 940d29cde7f16cd0916ed1d5f9c41154:src/ocamlup_lib/version.mlt
 # end context for src/ocamlup_lib/version.mlt
 
+# begin context for src/opam_bin_lib/dune
+# file src/opam_bin_lib/dune
+bdd17a2637afe45d6932b6a25400f880:src/opam_bin_lib/dune
+# end context for src/opam_bin_lib/dune
+
+# begin context for src/opam_bin_lib/index.mld
+# file src/opam_bin_lib/index.mld
+dc06dc0f9cc63d579535a267c7b2ca67:src/opam_bin_lib/index.mld
+# end context for src/opam_bin_lib/index.mld
+
+# begin context for src/opam_bin_lib/version.mlt
+# file src/opam_bin_lib/version.mlt
+637e7f853bf028673a923b8e5005cb36:src/opam_bin_lib/version.mlt
+# end context for src/opam_bin_lib/version.mlt
+
 # begin context for test/expect-tests/dune
 # file test/expect-tests/dune
-b8abdaddd34afd16104add618659e7c5:test/expect-tests/dune
+535a1070597593cc43fa6b2159eced9c:test/expect-tests/dune
 # end context for test/expect-tests/dune
 
 # begin context for test/expect-tests/test.ml
@@ -210,7 +230,7 @@ b8abdaddd34afd16104add618659e7c5:test/expect-tests/dune
 
 # begin context for test/inline-tests/dune
 # file test/inline-tests/dune
-3bb810103f8187fb41ecfc6ccc4c852d:test/inline-tests/dune
+1bd96745cc86903e7f716070e88f1f41:test/inline-tests/dune
 # end context for test/inline-tests/dune
 
 # begin context for test/inline-tests/test.ml
@@ -220,7 +240,7 @@ b8abdaddd34afd16104add618659e7c5:test/expect-tests/dune
 
 # begin context for test/output-tests/dune
 # file test/output-tests/dune
-4627bea5376b5cad066f25d1c2e8d785:test/output-tests/dune
+668559ec38f561fa91586a933e2e3fd1:test/output-tests/dune
 # end context for test/output-tests/dune
 
 # begin context for test/output-tests/test1.expected
